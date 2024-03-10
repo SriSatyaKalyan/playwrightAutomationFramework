@@ -200,4 +200,3 @@ test("Nav Bar Dropdowns - Men", async ({ browser }) => {
 			.first()
 	).toContainText("Shorts");
 });
-
