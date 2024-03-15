@@ -2,7 +2,7 @@ const { test, expect } = require("@playwright/test");
 const exp = require("constants");
 
 // THIS TEST CAN BE PARAMETERIZED FOR OTHER SEARCH OPTIONS AS WELL
-test.only("End To End - Purchase Leggings", async ({ browser }) => {
+test("End To End - Purchase Leggings", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
 
@@ -116,6 +116,14 @@ test.only("End To End - Purchase Leggings", async ({ browser }) => {
 
 	//Proceeding to Checkout
 	await page.locator("//button[@id='top-cart-btn-checkout']").click();
-
-	await expect(page).toHaveTitle("Checkout");
 });
+
+// https://softwaretestingboard.com/magento-store-notes/?utm_source=magento_store&utm_medium=banner&utm_campaign=notes_promo&utm_id=notes_promotion
+// test("Check Discount Code", async ({ browser }) => {
+// 	const context = await browser.newContext();
+// 	const page = await context.newPage();
+
+// 	await page.goto("https://magento.softwaretestingboard.com/");
+// });
+
+

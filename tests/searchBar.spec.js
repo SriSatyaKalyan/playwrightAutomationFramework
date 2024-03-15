@@ -46,3 +46,18 @@ test("Cart has no items", async ({ browser }) => {
 		page.locator("//*[@id='minicart-content-wrapper']/div[2]")
 	).toContainText("You have no items in your shopping cart.");
 });
+
+// test("Filter By Category", async ({ browser }) => {
+// 	const context = await browser.newContext();
+// 	const page = await context.newPage();
+
+// 	await page.goto("https://magento.softwaretestingboard.com/");
+// });
+
+//Clicking on Notes takes us to another page. Use Promise.all command to handle this
+// test("Footer Items", async ({ browser }) => {
+// 	const context = await browser.newContext();
+// 	const page = await context.newPage();
+
+// 	await page.goto("https://magento.softwaretestingboard.com/");
+// });
