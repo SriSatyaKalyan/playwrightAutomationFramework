@@ -1,42 +1,43 @@
 const { test, expect } = require("@playwright/test");
-const exp = require("constants");
+const { LoginPage } = require("../pageObjects/loginPage");
+const { SignInPage } = require("../pageObjects/signInPage");
 
 test("Home Page Title Test", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
+	const loginPage = new LoginPage(page);
 
-	await page.goto("https://magento.softwaretestingboard.com/");
-
-	//Printing the title of the Landing page
-	console.log(await page.title());
-	await expect(page).toHaveTitle("Home Page");
+	await loginPage.goToHomePage();
+	await loginPage.validateLandingOnHomePage();
 });
 
 test("Sign In Page Test", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
+	const loginPage = new LoginPage(page);
 
-	await page.goto("https://magento.softwaretestingboard.com/");
-	await page.locator("//li[@class='authorization-link']").first().click();
-	console.log(await page.title());
+	await loginPage.goToHomePage();
+	await loginPage.validateLandingOnSignInPage();
 });
 
 test("Invalid Sign In Test", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
+	const loginPage = new LoginPage(page);
 
-	await page.goto("https://magento.softwaretestingboard.com/");
-	// Click on Sign In button
-	await page.locator("//li[@class='authorization-link']").first().click();
+	const username = "jai@mail.com";
+	const password = "p@sswor!d";
+
+	loginPage.goToHomePage();
+	loginPage.goToSignInPage();
+	loginPage.validateLandingOnSignInPage();
 
 	const alert = page.locator(
 		"//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']"
 	);
 	await expect(alert).toHaveCount(0);
 
-	await page.locator("//input[@name='login[username]']").fill("jai@mail.com");
-	await page.locator("//input[@name='login[password]']").fill("p@sswor!d");
-	await page.locator("//button[@name='send']").first().click();
+	loginPage.loginAction(username, password);
 
 	await expect(alert).toHaveCount(1);
 	await expect(alert).toBeVisible();
@@ -44,21 +45,35 @@ test("Invalid Sign In Test", async ({ browser }) => {
 	await expect(alert).toContainText("incorrect");
 });
 
-test("Create Invalid Account Test", async ({ browser }) => {
+test.only("Check Mandatory Required Fields", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
+	const loginPage = new LoginPage(page);
+	const signInPage = new SignInPage(page);
 
-	await page.goto("https://magento.softwaretestingboard.com/");
-	// Click on Sign In button
-	await page
-		.locator(
-			"//a[@href='https://magento.softwaretestingboard.com/customer/account/create/']"
-		)
-		.first()
-		.click();
+	await loginPage.goToHomePage();
+	await signInPage.createNewAccountButton();
 
 	console.log(await page.title());
 	await expect(page).toHaveTitle("Create New Customer Account");
+
+	await page.locator("//button[@title='Create an Account']").click();
+
+	await expect(page.locator("//div[@id='firstname-error']")).toHaveText(
+		"This is a required field."
+	);
+	await expect(page.locator("//div[@id='lastname-error']")).toHaveText(
+		"This is a required field."
+	);
+	await expect(page.locator("//div[@id='email_address-error']")).toHaveText(
+		"This is a required field."
+	);
+	await expect(page.locator("//div[@id='password-error']")).toHaveText(
+		"This is a required field."
+	);
+	await expect(
+		page.locator("//div[@id='password-confirmation-error']")
+	).toHaveText("This is a required field.");
 });
 
 test("Create Account With Weak Strength Password Test", async ({ browser }) => {
