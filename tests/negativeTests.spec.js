@@ -1,11 +1,13 @@
 const { test, expect } = require("@playwright/test");
-const exp = require("constants");
+const { LoginPage } = require("../pageObjects/loginPage");
+const { SignInPage } = require("../pageObjects/signInPage");
 
 test("Purchasing Item without specs", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
+	const loginPage = new LoginPage(page);
 
-	await page.goto("https://magento.softwaretestingboard.com/");
+	await loginPage.goToHomePage();
 
 	//Travel to Sprite Yoga Straps
 	await page.goto(

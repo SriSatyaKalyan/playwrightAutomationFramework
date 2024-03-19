@@ -45,7 +45,39 @@ test("Invalid Sign In Test", async ({ browser }) => {
 	await expect(alert).toContainText("incorrect");
 });
 
-test.only("Check Mandatory Required Fields", async ({ browser }) => {
+test("Check Mandatory Required Fields", async ({ browser }) => {
+	const context = await browser.newContext();
+	const page = await context.newPage();
+	const loginPage = new LoginPage(page);
+	const signInPage = new SignInPage(page);
+
+	const firstNameError = "//div[@id='firstname-error']";
+	const lastNameError = "//div[@id='lastname-error']";
+	const emailAddressError = "//div[@id='email_address-error']";
+	const passwordError = "//div[@id='password-error']";
+	const passwordConfirmationError =
+		"//div[@id='password-confirmation-error']";
+
+	const requiredFieldText = "This is a required field.";
+
+	await loginPage.goToHomePage();
+	await signInPage.createNewAccountButton();
+
+	console.log(await page.title());
+	await expect(page).toHaveTitle("Create New Customer Account");
+
+	await page.locator("//button[@title='Create an Account']").click();
+
+	await expect(page.locator(firstNameError)).toHaveText(requiredFieldText);
+	await expect(page.locator(lastNameError)).toHaveText(requiredFieldText);
+	await expect(page.locator(emailAddressError)).toHaveText(requiredFieldText);
+	await expect(page.locator(passwordError)).toHaveText(requiredFieldText);
+	await expect(page.locator(passwordConfirmationError)).toHaveText(
+		requiredFieldText
+	);
+});
+
+test("Create Account With Weak Strength Password Test", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
 	const loginPage = new LoginPage(page);
@@ -57,47 +89,26 @@ test.only("Check Mandatory Required Fields", async ({ browser }) => {
 	console.log(await page.title());
 	await expect(page).toHaveTitle("Create New Customer Account");
 
-	await page.locator("//button[@title='Create an Account']").click();
+	const firstNameField = "//input[@id='firstname']";
+	const lastNameField = "//input[@id='lastname']";
+	const emailAddressField = "//input[@id='email_address']";
+	const passwordField = "//input[@id='password']";
+	const passwordConfirmationField = "//input[@id='password-confirmation']";
+	const submitButton = "//button[@class='action submit primary']";
+	const passwordStrengthMeter = "//div[@id='password-strength-meter']";
+	const weakPasswordText =
+		"Minimum of different classes of characters in password is 3. Classes of characters: Lower Case, Upper Case, Digits, Special Characters.";
+	const passwordError = "//div[@id='password-error']";
 
-	await expect(page.locator("//div[@id='firstname-error']")).toHaveText(
-		"This is a required field."
-	);
-	await expect(page.locator("//div[@id='lastname-error']")).toHaveText(
-		"This is a required field."
-	);
-	await expect(page.locator("//div[@id='email_address-error']")).toHaveText(
-		"This is a required field."
-	);
-	await expect(page.locator("//div[@id='password-error']")).toHaveText(
-		"This is a required field."
-	);
-	await expect(
-		page.locator("//div[@id='password-confirmation-error']")
-	).toHaveText("This is a required field.");
-});
+	await page.locator(firstNameField).fill("Liam");
+	await page.locator(lastNameField).fill("Konisegg");
+	await page.locator(emailAddressField).fill("liam.k@mail.com");
+	await page.locator(passwordField).fill("WeakPass");
+	await page.locator(passwordConfirmationField).fill("WeakPass");
+	await page.locator(submitButton).click();
 
-test("Create Account With Weak Strength Password Test", async ({ browser }) => {
-	const context = await browser.newContext();
-	const page = await context.newPage();
-
-	await page.goto(
-		"https://magento.softwaretestingboard.com/customer/account/create/"
-	);
-	await expect(page).toHaveTitle("Create New Customer Account");
-
-	await page.locator("//input[@id='firstname']").fill("Liam");
-	await page.locator("//input[@id='lastname']").fill("Konisegg");
-	await page.locator("//input[@id='email_address']").fill("liam.k@mail.com");
-	await page.locator("//input[@id='password']").fill("WeakPass");
-	await page.locator("//input[@id='password-confirmation']").fill("WeakPass");
-	await page.locator("//button[@class='action submit primary']").click();
-
-	await expect(
-		page.locator("//div[@id='password-strength-meter']")
-	).toContainText("Weak");
-	await expect(page.locator("//div[@id='password-error']")).toContainText(
-		"Minimum of different classes of characters in password is 3. Classes of characters: Lower Case, Upper Case, Digits, Special Characters."
-	);
+	await expect(page.locator(passwordStrengthMeter)).toContainText("Weak");
+	await expect(page.locator(passwordError)).toContainText(weakPasswordText);
 });
 
 test("Create Account With Medium Strength Password Test", async ({
