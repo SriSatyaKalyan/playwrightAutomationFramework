@@ -35,7 +35,7 @@ test("Add Items to Wishlist - Search Page", async ({ browser }) => {
 	).toBeVisible();
 });
 
-test.only("Add Items to Wishlist - Item Page", async ({ browser }) => {
+test("Add Items to Wishlist - Item Page", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
 
@@ -76,6 +76,16 @@ test.only("Add Items to Wishlist - Item Page", async ({ browser }) => {
 	// await page.pause();
 });
 
+
+// test("Compare Products - Add To Compare", async ({ browser }) => {
+// 	const context = await browser.newContext();
+// 	const page = await context.newPage();
+
+// 	await page.goto("https://magento.softwaretestingboard.com/");
+
+
+// });
+
 // test("Add Reviews to Items", async ({ browser }) => {
 // 	const context = await browser.newContext();
 // 	const page = await context.newPage();
@@ -83,14 +93,14 @@ test.only("Add Items to Wishlist - Item Page", async ({ browser }) => {
 // 	await page.goto("https://magento.softwaretestingboard.com/");
 // });
 
-// test("Compare Products - Add To Compare", async ({ browser }) => {
+// test("Increase Items per Page Count", async ({ browser }) => {
 // 	const context = await browser.newContext();
 // 	const page = await context.newPage();
 
 // 	await page.goto("https://magento.softwaretestingboard.com/");
 // });
 
-// test("Increase Items per Page Count", async ({ browser }) => {
+// test("Clear Items in Wish List", async ({ browser }) => {
 // 	const context = await browser.newContext();
 // 	const page = await context.newPage();
 
