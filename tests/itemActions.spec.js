@@ -108,13 +108,33 @@ test("Clear Items in Wish List", async ({ browser }) => {
 	).toBeVisible();
 });
 
-// test("Compare Products - Add To Compare", async ({ browser }) => {
-// 	const context = await browser.newContext();
-// 	const page = await context.newPage();
+test("Compare Products - Add To Compare", async ({ browser }) => {
+	const context = await browser.newContext();
+	const page = await context.newPage();
 
-// 	await page.goto("https://magento.softwaretestingboard.com/");
+	await page.goto("https://magento.softwaretestingboard.com/");
 
-// });
+	//Search for Bags and compare them
+	await page.getByPlaceholder("Search entire store here...").fill("Tote");
+
+	await page.keyboard.press("Enter");
+
+	await page.locator("//div[@class='product-item-info']").nth(0).hover();
+	// await page.waitForTimeout(1_000);
+	await page.locator("//a[@class='action tocompare']").nth(0).click();
+
+	await page.locator("//div[@class='product-item-info']").nth(1).hover();
+	// await page.waitForTimeout(1_000);
+	await page.locator("//a[@class='action tocompare']").nth(1).click();
+
+	await page.locator("//a[@class='action compare']").click();
+
+	await expect(page).toHaveTitle(
+		"Products Comparison List - Magento Commerce"
+	);
+
+	await expect(page.getByText("Compare Products").first()).toBeVisible();
+});
 
 // test("Add Reviews to Items", async ({ browser }) => {
 // 	const context = await browser.newContext();
