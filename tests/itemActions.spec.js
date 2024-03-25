@@ -1,4 +1,6 @@
 const { test, expect } = require("@playwright/test");
+const { assert } = require("console");
+
 // Annotate entire file as serial.
 test.describe.configure({ mode: "serial" });
 
@@ -136,16 +138,70 @@ test("Compare Products - Add To Compare", async ({ browser }) => {
 	await expect(page.getByText("Compare Products").first()).toBeVisible();
 });
 
-// test("Add Reviews to Items", async ({ browser }) => {
-// 	const context = await browser.newContext();
-// 	const page = await context.newPage();
+test("Skipping Rating when providing Review", async ({ browser }) => {
+	const context = await browser.newContext();
+	const page = await context.newPage();
 
-// 	await page.goto("https://magento.softwaretestingboard.com/");
-// });
+	await page.goto("https://magento.softwaretestingboard.com/");
+	await page.goto(
+		"https://magento.softwaretestingboard.com/affirm-water-bottle.html"
+	);
 
-// test("Increase Items per Page Count", async ({ browser }) => {
-// 	const context = await browser.newContext();
-// 	const page = await context.newPage();
+	await page.locator("//div[@id='tab-label-reviews']").click();
+	await page.waitForTimeout(1_000);
 
-// 	await page.goto("https://magento.softwaretestingboard.com/");
-// });
+	expect(await page.locator("//div[@class='review-content']")).toContainText(
+		"Wide mouth opening makes it easy to clean!"
+	);
+
+	//Started to provide own review
+	// await page.waitForTimeout(1_000);
+	// await page.locator("//label[@id='Rating_4_label']").click();
+
+	await page.locator("//input[@id='nickname_field']").fill("Liam");
+	await page.locator("//input[@id='summary_field']").fill("Good Bottle");
+	await page
+		.locator("//input[@id='nickname_field']")
+		.fill("Liked the bottle but would like a bigger one lol.");
+	await page.locator("//button[@type='submit']").nth(2).click();
+
+	expect(
+		await page.getByText("Please select one of each of the ratings above.")
+	).toBeVisible();
+});
+
+test.only("Increase Items per Page Count", async ({ browser }) => {
+	const context = await browser.newContext();
+	const page = await context.newPage();
+
+	await page.goto("https://magento.softwaretestingboard.com/");
+	await page.goto(
+		"https://magento.softwaretestingboard.com/women/bottoms-women.html"
+	);
+
+	let pageCount = await page
+		.locator("//select[@data-role='limiter']")
+		.locator("//option[@selected='selected']")
+		.nth(1)
+		.textContent();
+	console.log("The pageCount is: " + pageCount);
+
+	let productCount = await page
+		.locator("//img[@class='product-image-photo']")
+		.count();
+	console.log("The productCount is: " + productCount);
+
+	console.log(
+		"Are the page and product counts equal?: " + (productCount == pageCount)
+	);
+
+	//changing the number of elements
+	await page
+		.locator("//select[@data-role='limiter']")
+		.nth(1)
+		.locator("//option[@value='24']")
+		.nth(1)
+		.click();
+
+	await page.pause();
+});
