@@ -1,202 +1,76 @@
 const { test, expect } = require("@playwright/test");
-const exp = require("constants");
+const { pageObjectManager } = require("../pageObjects/pageObjectManager");
 
 test("Nav Bar Content Test", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
 
-	await page.goto("https://magento.softwaretestingboard.com/");
+	const pageManager = new pageObjectManager(page);
+	const homePage = pageManager.getHomePage();
 
-	await expect(
-		page.locator(
-			"//a[@href='https://magento.softwaretestingboard.com/what-is-new.html']"
-		)
-	).toContainText("What's New");
+	await pageManager.getLoginPage().goToHomePage();
 
-	await expect(
-		page.locator(
-			"//a[@href='https://magento.softwaretestingboard.com/women.html']"
-		)
-	).toContainText("Women");
-	await expect(
-		page.locator(
-			"//a[@href='https://magento.softwaretestingboard.com/men.html']"
-		)
-	).toContainText("Men");
-	await expect(
-		page.locator(
-			"//a[@href='https://magento.softwaretestingboard.com/gear.html']"
-		)
-	).toContainText("Gear");
-	await expect(
-		page.locator(
-			"//a[@href='https://magento.softwaretestingboard.com/training.html']"
-		)
-	).toContainText("Training");
-	await expect(
-		page.locator(
-			"//a[@href='https://magento.softwaretestingboard.com/sale.html']"
-		)
-	).toContainText("Sale");
+	await expect(homePage.whatsNew).toContainText("What's New");
+	await expect(homePage.women).toContainText("Women");
+	await expect(homePage.men).toContainText("Men");
+	await expect(homePage.gear).toContainText("Gear");
+	await expect(homePage.training).toContainText("Training");
+	await expect(homePage.sale).toContainText("Sale");
 });
 
 // Have to use children icons here
 test("Nav Bar Dropdowns - Women", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
+	const pageManager = new pageObjectManager(page);
 
-	await page.goto("https://magento.softwaretestingboard.com/");
+	await pageManager.getLoginPage().goToHomePage();
+
+	const homePage = pageManager.getHomePage();
+	const womenPage = pageManager.getWomenPage();
 
 	// Hovering over Womens navbar button
-	await expect(
-		page.locator(
-			"//a[@href='https://magento.softwaretestingboard.com/women.html']"
-		)
-	).toContainText("Women");
-
+	await expect(homePage.women).toContainText("Women");
 	//Checking the presence of first option in Women dropdown
-	await expect(
-		page
-			.locator(
-				"//a[@href='https://magento.softwaretestingboard.com/women/tops-women.html']"
-			)
-			.first()
-	).toContainText("Tops");
-
+	await expect(womenPage.womenTops.first()).toContainText("Tops");
 	// Checking the presence of second option in Women dropdown
-	await expect(
-		page
-			.locator(
-				"//a[@href='https://magento.softwaretestingboard.com/women/bottoms-women.html']"
-			)
-			.first()
-	).toContainText("Bottoms");
-
+	await expect(womenPage.womenBottoms.first()).toContainText("Bottoms");
 	//Checking presence of Jackets, Hoodies and Sweatshirts, Tees and Bras and Tanks in the Women >> Tops section
-	await expect(
-		page
-			.locator(
-				"//a[@href='https://magento.softwaretestingboard.com/women/tops-women/jackets-women.html']"
-			)
-			.first()
-	).toContainText("Jackets");
-
-	await expect(
-		page
-			.locator(
-				"//a[@href='https://magento.softwaretestingboard.com/women/tops-women/hoodies-and-sweatshirts-women.html']"
-			)
-			.first()
-	).toContainText("Hoodies & Sweatshirts");
-
-	await expect(
-		page
-			.locator(
-				"//a[@href='https://magento.softwaretestingboard.com/women/tops-women/tees-women.html']"
-			)
-			.first()
-	).toContainText("Tees");
-
-	await expect(
-		page
-			.locator(
-				"//a[@href='https://magento.softwaretestingboard.com/women/tops-women/tanks-women.html']"
-			)
-			.first()
-	).toContainText("Bras & Tanks");
-
+	await expect(womenPage.womenJackets.first()).toContainText("Jackets");
+	await expect(womenPage.womenHoodies.first()).toContainText(
+		"Hoodies & Sweatshirts"
+	);
+	await expect(womenPage.womenTees.first()).toContainText("Tees");
+	await expect(womenPage.womenTanks.first()).toContainText("Bras & Tanks");
 	//Checking presence of Tanks and Bottoms in the Women >> Bottoms section
-	await expect(
-		page
-			.locator(
-				"//a[@href='https://magento.softwaretestingboard.com/women/bottoms-women/pants-women.html']"
-			)
-			.first()
-	).toContainText("Pants");
-
-	await expect(
-		page
-			.locator(
-				"//a[@href='https://magento.softwaretestingboard.com/women/bottoms-women/shorts-women.html']"
-			)
-			.first()
-	).toContainText("Shorts");
+	await expect(womenPage.womenPants.first()).toContainText("Pants");
+	await expect(womenPage.womenShorts.first()).toContainText("Shorts");
 });
 
 test("Nav Bar Dropdowns - Men", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
+	const pageManager = new pageObjectManager(page);
 
-	await page.goto("https://magento.softwaretestingboard.com/");
+	await pageManager.getLoginPage().goToHomePage();
+
+	const homePage = pageManager.getHomePage();
+	const menPage = pageManager.getMenPage();
 
 	//Checking the presence of Men dropdown
-	await expect(
-		page.locator(
-			"//a[@href='https://magento.softwaretestingboard.com/men.html']"
-		)
-	).toContainText("Men");
-
+	await expect(homePage.men).toContainText("Men");
 	//Checking the presence of first option in Men dropdown
-	await expect(
-		page.locator(
-			"//a[@href='https://magento.softwaretestingboard.com/men/tops-men.html']"
-		)
-	).toContainText("Tops");
-
+	await expect(menPage.menTops).toContainText("Tops");
 	//Checking the presence of second option in Men dropdown
-	await expect(
-		page.locator(
-			"//a[@href='https://magento.softwaretestingboard.com/men/bottoms-men.html']"
-		)
-	).toContainText("Bottoms");
-
+	await expect(menPage.menBottoms).toContainText("Bottoms");
 	//Checking presence of Jackets, Hoodies and Sweatshirts, Tees and Bras and Tanks in the Men >> Tops section
-	await expect(
-		page
-			.locator(
-				"//a[@href='https://magento.softwaretestingboard.com/men/tops-men/jackets-men.html']"
-			)
-			.first()
-	).toContainText("Jackets");
-
-	await expect(
-		page
-			.locator(
-				"//a[@href='https://magento.softwaretestingboard.com/men/tops-men/hoodies-and-sweatshirts-men.html']"
-			)
-			.first()
-	).toContainText("Hoodies & Sweatshirts");
-
-	await expect(
-		page
-			.locator(
-				"//a[@href='https://magento.softwaretestingboard.com/men/tops-men/tees-men.html']"
-			)
-			.first()
-	).toContainText("Tees");
-
-	await expect(
-		page
-			.locator(
-				"//a[@href='https://magento.softwaretestingboard.com/men/tops-men/tanks-men.html']"
-			)
-			.first()
-	).toContainText("Tanks");
-
+	await expect(menPage.menJackets.first()).toContainText("Jackets");
+	await expect(menPage.menHoodies.first()).toContainText(
+		"Hoodies & Sweatshirts"
+	);
+	await expect(menPage.menTees.first()).toContainText("Tees");
+	await expect(menPage.menTanks.first()).toContainText("Tanks");
 	//Checking presence of Tanks and Bottoms in the Men >> Bottoms section
-	await expect(
-		page
-			.locator(
-				"//a[@href='https://magento.softwaretestingboard.com/men/bottoms-men/pants-men.html']"
-			)
-			.first()
-	).toContainText("Pants");
-
-	await expect(
-		page
-			.locator(
-				"//a[@href='https://magento.softwaretestingboard.com/men/bottoms-men/shorts-men.html']"
-			)
-			.first()
-	).toContainText("Shorts");
+	await expect(menPage.menPants.first()).toContainText("Pants");
+	await expect(menPage.menShorts.first()).toContainText("Shorts");
 });

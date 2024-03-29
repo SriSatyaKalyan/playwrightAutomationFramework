@@ -1,11 +1,12 @@
 const { test, expect } = require("@playwright/test");
-const { LoginPage } = require("../pageObjects/loginPage");
-const { SignInPage } = require("../pageObjects/signInPage");
+const { pageObjectManager } = require("../pageObjects/pageObjectManager");
 
 test("Home Page Title Test", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
-	const loginPage = new LoginPage(page);
+
+	const pageManager = new pageObjectManager(page);
+	const loginPage = pageManager.getLoginPage();
 
 	await loginPage.goToHomePage();
 	await loginPage.validateLandingOnHomePage();
@@ -14,7 +15,9 @@ test("Home Page Title Test", async ({ browser }) => {
 test("Sign In Page Test", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
-	const loginPage = new LoginPage(page);
+
+	const pageManager = new pageObjectManager(page);
+	const loginPage = pageManager.getLoginPage();
 
 	await loginPage.goToHomePage();
 	await loginPage.validateLandingOnSignInPage();
@@ -23,7 +26,9 @@ test("Sign In Page Test", async ({ browser }) => {
 test("Invalid Sign In Test", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
-	const loginPage = new LoginPage(page);
+
+	const pageManager = new pageObjectManager(page);
+	const loginPage = pageManager.getLoginPage();
 
 	const username = "jai@mail.com";
 	const password = "p@sswor!d";
@@ -32,9 +37,10 @@ test("Invalid Sign In Test", async ({ browser }) => {
 	loginPage.goToSignInPage();
 	loginPage.validateLandingOnSignInPage();
 
-	const alert = page.locator(
-		"//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']"
-	);
+	const alertLocator =
+		"//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']";
+
+	const alert = page.locator(alertLocator);
 	await expect(alert).toHaveCount(0);
 
 	loginPage.loginAction(username, password);
@@ -48,8 +54,10 @@ test("Invalid Sign In Test", async ({ browser }) => {
 test("Check Mandatory Required Fields", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
-	const loginPage = new LoginPage(page);
-	const signInPage = new SignInPage(page);
+
+	const pageManager = new pageObjectManager(page);
+	const loginPage = pageManager.getLoginPage();
+	const signInPage = pageManager.getSignInPage();
 
 	const firstNameError = "//div[@id='firstname-error']";
 	const lastNameError = "//div[@id='lastname-error']";
@@ -80,8 +88,10 @@ test("Check Mandatory Required Fields", async ({ browser }) => {
 test("Create Account With Weak Strength Password Test", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
-	const loginPage = new LoginPage(page);
-	const signInPage = new SignInPage(page);
+
+	const pageManager = new pageObjectManager(page);
+	const loginPage = pageManager.getLoginPage();
+	const signInPage = pageManager.getSignInPage();
 
 	await loginPage.goToHomePage();
 	await signInPage.createNewAccountButton();
@@ -122,24 +132,32 @@ test("Create Account With Medium Strength Password Test", async ({
 	);
 	await expect(page).toHaveTitle("Create New Customer Account");
 
-	await page.locator("//input[@id='firstname']").fill("Natalie");
-	await page.locator("//input[@id='lastname']").fill("Konisegg");
-	await page.locator("//input[@id='email_address']").fill("liam.k@mail.com");
-	await page.locator("//input[@id='password']").fill("MediP@ss");
-	await page.locator("//input[@id='password-confirmation']").fill("MediP@ss");
+	const firstNameField = "//input[@id='firstname']";
+	const lastNameField = "//input[@id='lastname']";
+	const emailAddressField = "//input[@id='email_address']";
+	const passwordField = "//input[@id='password']";
+	const passwordConfirmationField = "//input[@id='password-confirmation']";
+	const passwordStrengthMeter = "//div[@id='password-strength-meter']";
 
-	await expect(
-		page.locator("//div[@id='password-strength-meter']")
-	).toContainText("Medium");
+	await page.locator(firstNameField).fill("Natalie");
+	await page.locator(lastNameField).fill("Konisegg");
+	await page.locator(emailAddressField).fill("liam.k@mail.com");
+	await page.locator(passwordField).fill("MediP@ss");
+	await page.locator(passwordConfirmationField).fill("MediP@ss");
+
+	await expect(page.locator(passwordStrengthMeter)).toContainText("Medium");
 });
 
 test("Successful Login Test", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
+	const homePage = "https://magento.softwaretestingboard.com/";
 
-	await page.goto("https://magento.softwaretestingboard.com/");
+	await page.goto(homePage);
+
 	// Click on Sign In button
-	await page.locator("//li[@class='authorization-link']").first().click();
+	const signInLink = "//li[@class='authorization-link']";
+	await page.locator(signInLink).first().click();
 
 	const alert = page.locator(
 		"//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']"
@@ -152,8 +170,9 @@ test("Successful Login Test", async ({ browser }) => {
 	await page.locator("//input[@name='login[password]']").fill("MediP@ss");
 	await page.locator("//button[@name='send']").first().click();
 
+	const loggedIn = "//span[@class='logged-in']";
+	const welcomeMessage = "Welcome, Liam Konisegg!";
+
 	await expect(page).toHaveTitle("Home Page");
-	await expect(
-		page.locator("//span[@class='logged-in']").first()
-	).toContainText("Welcome, Liam Konisegg!");
+	await expect(page.locator(loggedIn).first()).toContainText(welcomeMessage);
 });

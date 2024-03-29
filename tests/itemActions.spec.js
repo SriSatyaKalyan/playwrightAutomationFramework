@@ -170,7 +170,7 @@ test("Skipping Rating when providing Review", async ({ browser }) => {
 	).toBeVisible();
 });
 
-test.only("Increase Items per Page Count", async ({ browser }) => {
+test("Increase Items per Page Count", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
 
@@ -195,13 +195,31 @@ test.only("Increase Items per Page Count", async ({ browser }) => {
 		"Are the page and product counts equal?: " + (productCount == pageCount)
 	);
 
-	//changing the number of elements
-	await page
-		.locator("//select[@data-role='limiter']")
-		.nth(1)
-		.locator("//option[@value='24']")
-		.nth(1)
-		.click();
+	await page.goto(
+		"https://magento.softwaretestingboard.com/women/bottoms-women.html?product_list_limit=24"
+	);
 
-	await page.pause();
+	pageCount = await page
+		.locator("//select[@data-role='limiter']")
+		.locator("//option[@selected='selected']")
+		.nth(1)
+		.textContent();
+	console.log("The pageCount is: " + pageCount);
+
+	productCount = await page
+		.locator("//img[@class='product-image-photo']")
+		.count();
+	console.log("The productCount is: " + productCount);
+
+	console.log(
+		"Are the page and product counts equal?: " + (productCount == pageCount)
+	);
+
+	//changing the number of elements
+	// await page
+	// 	.locator("//select[@data-role='limiter']")
+	// 	.nth(1)
+	// 	.locator("//option[@value='24']")
+	// 	.nth(1)
+	// 	.click();
 });
