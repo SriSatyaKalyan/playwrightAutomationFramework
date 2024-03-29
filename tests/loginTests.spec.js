@@ -1,5 +1,6 @@
 const { test, expect } = require("@playwright/test");
 const { pageObjectManager } = require("../pageObjects/pageObjectManager");
+const dataset = JSON.parse(JSON.stringify(require("../utils/testData.json")));
 
 test("Home Page Title Test", async ({ browser }) => {
 	const context = await browser.newContext();
@@ -30,9 +31,6 @@ test("Invalid Sign In Test", async ({ browser }) => {
 	const pageManager = new pageObjectManager(page);
 	const loginPage = pageManager.getLoginPage();
 
-	const username = "jai@mail.com";
-	const password = "p@sswor!d";
-
 	loginPage.goToHomePage();
 	loginPage.goToSignInPage();
 	loginPage.validateLandingOnSignInPage();
@@ -42,6 +40,9 @@ test("Invalid Sign In Test", async ({ browser }) => {
 
 	const alert = page.locator(alertLocator);
 	await expect(alert).toHaveCount(0);
+
+	const username = "jai@mail.com";
+	const password = "p@sswor!d";
 
 	loginPage.loginAction(username, password);
 
@@ -110,11 +111,11 @@ test("Create Account With Weak Strength Password Test", async ({ browser }) => {
 		"Minimum of different classes of characters in password is 3. Classes of characters: Lower Case, Upper Case, Digits, Special Characters.";
 	const passwordError = "//div[@id='password-error']";
 
-	await page.locator(firstNameField).fill("Liam");
-	await page.locator(lastNameField).fill("Konisegg");
-	await page.locator(emailAddressField).fill("liam.k@mail.com");
-	await page.locator(passwordField).fill("WeakPass");
-	await page.locator(passwordConfirmationField).fill("WeakPass");
+	await page.locator(firstNameField).fill(dataset.firstName);
+	await page.locator(lastNameField).fill(dataset.lastName);
+	await page.locator(emailAddressField).fill(dataset.emailAddress);
+	await page.locator(passwordField).fill(dataset.weakPassword);
+	await page.locator(passwordConfirmationField).fill(dataset.weakPassword);
 	await page.locator(submitButton).click();
 
 	await expect(page.locator(passwordStrengthMeter)).toContainText("Weak");
@@ -139,11 +140,11 @@ test("Create Account With Medium Strength Password Test", async ({
 	const passwordConfirmationField = "//input[@id='password-confirmation']";
 	const passwordStrengthMeter = "//div[@id='password-strength-meter']";
 
-	await page.locator(firstNameField).fill("Natalie");
-	await page.locator(lastNameField).fill("Konisegg");
-	await page.locator(emailAddressField).fill("liam.k@mail.com");
-	await page.locator(passwordField).fill("MediP@ss");
-	await page.locator(passwordConfirmationField).fill("MediP@ss");
+	await page.locator(firstNameField).fill(dataset.firstNameNatalie);
+	await page.locator(lastNameField).fill(dataset.lastName);
+	await page.locator(emailAddressField).fill(dataset.emailAddress);
+	await page.locator(passwordField).fill(dataset.mediumPassword);
+	await page.locator(passwordConfirmationField).fill(dataset.mediumPassword);
 
 	await expect(page.locator(passwordStrengthMeter)).toContainText("Medium");
 });
