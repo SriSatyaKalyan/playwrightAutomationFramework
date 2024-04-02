@@ -18,7 +18,7 @@ class CreateAccountPage {
 			"//input[@id='password-confirmation']"
 		);
 		this.passwordStrengthMeter = page.locator(
-			"//div[@id='password-strength-meter']"
+			"//span[@id='password-strength-meter-label']"
 		);
 
 		this.firstNameError = page.locator("//div[@id='firstname-error']");

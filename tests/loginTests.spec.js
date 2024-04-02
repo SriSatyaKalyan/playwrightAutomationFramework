@@ -4,11 +4,8 @@ const { customTest } = require("../utils/testBase");
 const { pageObjectManager } = require("../pageObjects/pageObjectManager");
 const dataset = JSON.parse(JSON.stringify(require("../utils/testData.json")));
 
-test("Home Page Title Test", async ({ browser }) => {
+test("Home Page Title Test", async ({ page }) => {
 	console.log("Home Page Title Test");
-	const context = await browser.newContext();
-	const page = await context.newPage();
-
 	const pageManager = new pageObjectManager(page);
 	const homePage = pageManager.getHomePage();
 
@@ -16,10 +13,8 @@ test("Home Page Title Test", async ({ browser }) => {
 	await homePage.validateLandingOnHomePage();
 });
 
-test("Sign In Page Test", async ({ browser }) => {
+test("Sign In Page Test", async ({ page }) => {
 	console.log("Sign In Page Test");
-	const context = await browser.newContext();
-	const page = await context.newPage();
 
 	const pageManager = new pageObjectManager(page);
 	const signInPage = pageManager.getSignInPage();
@@ -31,10 +26,8 @@ test("Sign In Page Test", async ({ browser }) => {
 	await signInPage.validateLandingOnSignInPage();
 });
 
-test("Invalid Sign In Test", async ({ browser }) => {
+test("Invalid Sign In Test", async ({ page }) => {
 	console.log("Invalid Sign In Test");
-	const context = await browser.newContext();
-	const page = await context.newPage();
 
 	const pageManager = new pageObjectManager(page);
 	const loginPage = pageManager.getLoginPage();
@@ -59,10 +52,7 @@ test("Invalid Sign In Test", async ({ browser }) => {
 	);
 });
 
-test("Check Mandatory Required Fields", async ({ browser }) => {
-	const context = await browser.newContext();
-	const page = await context.newPage();
-
+test("Check Mandatory Required Fields", async ({ page }) => {
 	const pageManager = new pageObjectManager(page);
 	const signInPage = pageManager.getSignInPage();
 	const accountPage = pageManager.getAccountPage();
@@ -93,11 +83,8 @@ test("Check Mandatory Required Fields", async ({ browser }) => {
 
 for (const data of dataset) {
 	test(`Create Account With "${data.strength}" Strength Password Test`, async ({
-		browser,
+		page,
 	}) => {
-		const context = await browser.newContext();
-		const page = await context.newPage();
-
 		const pageManager = new pageObjectManager(page);
 		const signInPage = pageManager.getSignInPage();
 		const accountPage = pageManager.getAccountPage();
@@ -113,16 +100,14 @@ for (const data of dataset) {
 		await accountPage.passwordField.fill(data.password);
 		await accountPage.passwordConfirmationField.fill(data.password);
 
+		await page.waitForTimeout(2_000);
 		await expect(accountPage.passwordStrengthMeter).toContainText(
 			data.strength
 		);
 	});
 }
 
-customTest("Successful Login Test", async ({ browser, testDataForSignIn }) => {
-	const context = await browser.newContext();
-	const page = await context.newPage();
-
+customTest("Successful Login Test", async ({ page, testDataForSignIn }) => {
 	const pageManager = new pageObjectManager(page);
 	const loginPage = pageManager.getLoginPage();
 	const signInPage = pageManager.getSignInPage();

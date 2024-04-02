@@ -4,6 +4,8 @@ const { WomensPage } = require("../pageObjects/womensPage");
 const { MensPage } = require("../pageObjects/mensPage");
 const { SignInPage } = require("./signInPage");
 const { CreateAccountPage } = require("./createAccountPage");
+const { WishListPage } = require("./wishListPage");
+const { ItemPage } = require("./itemPage");
 
 class pageObjectManager {
 	constructor(page) {
@@ -14,9 +16,19 @@ class pageObjectManager {
 		this.menPage = new MensPage(page);
 		this.signInPage = new SignInPage(page);
 		this.createAccountPage = new CreateAccountPage(page);
+		this.wishListPage = new WishListPage(page);
+		this.itemPage = new ItemPage(page);
 	}
 
-	getAccountPage(){
+	getItemPage() {
+		return this.itemPage;
+	}
+
+	getWishListPage() {
+		return this.wishListPage;
+	}
+
+	getAccountPage() {
 		return this.createAccountPage;
 	}
 

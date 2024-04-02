@@ -18,7 +18,7 @@ class LoginPage {
 		await this.signInPageButton.click();
 	}
 
-	async loginAction(username, password) {
+	async loginAction(username = "liam.k@mail.com", password = "MediP@ss") {
 		await this.username.fill(username);
 		await this.password.fill(password);
 		await this.signInSubmit.first().click();
