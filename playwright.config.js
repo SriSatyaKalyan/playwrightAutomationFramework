@@ -30,7 +30,7 @@ module.exports = defineConfig({
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 		trace: "retain-on-failure",
 		browserName: "chromium",
-		screenshot: "on",
+		screenshot: "only-on-failure",
 		headless: true,
 	},
 	timeout: 30 * 1000,
@@ -39,18 +39,33 @@ module.exports = defineConfig({
 	projects: [
 		{
 			name: "chromium",
-			use: { ...devices["Desktop Chrome"] },
+			use: {
+				// ...devices["iPhone 11"],
+				...devices["Desktop Chrome"],
+				trace: "retain-on-failure",
+				browserName: "chromium",
+				screenshot: "only-on-failure",
+				headless: true,
+			},
 		},
-
+		// {
+		// 	name: "safari",
+		// 	use: {
+		// 		...devices["Desktop Safari"],
+		// 		trace: "retain-on-failure",
+		// 		browserName: "chromium",
+		// 		screenshot: "only-on-failure",
+		// 		headless: true,
+		// 		viewport: {
+		// 			width: 850,
+		// 			height: 720,
+		// 		},
+		// 	},
+		// },
 		//commented below section because it is repeating tests
 		// {
 		//   name: "firefox",
 		//   use: { ...devices["Desktop Firefox"] },
-		// },
-
-		// {
-		//   name: "webkit",
-		//   use: { ...devices["Desktop Safari"] },
 		// },
 
 		/* Test against mobile viewports. */

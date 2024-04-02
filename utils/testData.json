@@ -1,8 +1,16 @@
-{
-	"firstName": "Liam",
-	"firstNameNatalie": "Natalie",
-	"lastName": "Konisegg",
-	"emailAddress": "liam.k@mail.com",
-	"mediumPassword": "MediP@ss",
-	"weakPassword": "WeakPass"
-}
+[
+	{
+		"strength": "Medium",
+		"firstName": "Liam",
+		"lastName": "Konisegg",
+		"emailAddress": "liam.k@mail.com",
+		"password": "MediP@ss"
+	},
+	{
+		"strength": "Weak",
+		"firstName": "Natalie",
+		"lastName": "Konisegg",
+		"emailAddress": "nate.k@mail.com",
+		"password": "WeakPass"
+	}
+]

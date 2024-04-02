@@ -1,4 +1,6 @@
 const { test, expect } = require("@playwright/test");
+const { customTest } = require("../utils/testBase");
+
 const { pageObjectManager } = require("../pageObjects/pageObjectManager");
 const dataset = JSON.parse(JSON.stringify(require("../utils/testData.json")));
 
@@ -86,70 +88,44 @@ test("Check Mandatory Required Fields", async ({ browser }) => {
 	);
 });
 
-test("Create Account With Weak Strength Password Test", async ({ browser }) => {
-	const context = await browser.newContext();
-	const page = await context.newPage();
+for (const data of dataset) {
+	test(`Create Account With "${data.strength}" Strength Password Test`, async ({
+		browser,
+	}) => {
+		const context = await browser.newContext();
+		const page = await context.newPage();
 
-	const pageManager = new pageObjectManager(page);
-	const loginPage = pageManager.getLoginPage();
-	const signInPage = pageManager.getSignInPage();
+		const pageManager = new pageObjectManager(page);
+		const loginPage = pageManager.getLoginPage();
+		const signInPage = pageManager.getSignInPage();
 
-	await loginPage.goToHomePage();
-	await signInPage.createNewAccountButton();
+		await loginPage.goToHomePage();
+		await signInPage.createNewAccountButton();
 
-	console.log(await page.title());
-	await expect(page).toHaveTitle("Create New Customer Account");
+		console.log(await page.title());
+		await expect(page).toHaveTitle("Create New Customer Account");
 
-	const firstNameField = "//input[@id='firstname']";
-	const lastNameField = "//input[@id='lastname']";
-	const emailAddressField = "//input[@id='email_address']";
-	const passwordField = "//input[@id='password']";
-	const passwordConfirmationField = "//input[@id='password-confirmation']";
-	const submitButton = "//button[@class='action submit primary']";
-	const passwordStrengthMeter = "//div[@id='password-strength-meter']";
-	const weakPasswordText =
-		"Minimum of different classes of characters in password is 3. Classes of characters: Lower Case, Upper Case, Digits, Special Characters.";
-	const passwordError = "//div[@id='password-error']";
+		const firstNameField = "//input[@id='firstname']";
+		const lastNameField = "//input[@id='lastname']";
+		const emailAddressField = "//input[@id='email_address']";
+		const passwordField = "//input[@id='password']";
+		const passwordConfirmationField =
+			"//input[@id='password-confirmation']";
+		const passwordStrengthMeter = "//div[@id='password-strength-meter']";
 
-	await page.locator(firstNameField).fill(dataset.firstName);
-	await page.locator(lastNameField).fill(dataset.lastName);
-	await page.locator(emailAddressField).fill(dataset.emailAddress);
-	await page.locator(passwordField).fill(dataset.weakPassword);
-	await page.locator(passwordConfirmationField).fill(dataset.weakPassword);
-	await page.locator(submitButton).click();
+		await page.locator(firstNameField).fill(data.firstName);
+		await page.locator(lastNameField).fill(data.lastName);
+		await page.locator(emailAddressField).fill(data.emailAddress);
+		await page.locator(passwordField).fill(data.password);
+		await page.locator(passwordConfirmationField).fill(data.password);
 
-	await expect(page.locator(passwordStrengthMeter)).toContainText("Weak");
-	await expect(page.locator(passwordError)).toContainText(weakPasswordText);
-});
+		await expect(page.locator(passwordStrengthMeter)).toContainText(
+			data.strength
+		);
+	});
+}
 
-test("Create Account With Medium Strength Password Test", async ({
-	browser,
-}) => {
-	const context = await browser.newContext();
-	const page = await context.newPage();
-
-	await page.goto(
-		"https://magento.softwaretestingboard.com/customer/account/create/"
-	);
-	await expect(page).toHaveTitle("Create New Customer Account");
-
-	const firstNameField = "//input[@id='firstname']";
-	const lastNameField = "//input[@id='lastname']";
-	const emailAddressField = "//input[@id='email_address']";
-	const passwordField = "//input[@id='password']";
-	const passwordConfirmationField = "//input[@id='password-confirmation']";
-	const passwordStrengthMeter = "//div[@id='password-strength-meter']";
-
-	await page.locator(firstNameField).fill(dataset.firstNameNatalie);
-	await page.locator(lastNameField).fill(dataset.lastName);
-	await page.locator(emailAddressField).fill(dataset.emailAddress);
-	await page.locator(passwordField).fill(dataset.mediumPassword);
-	await page.locator(passwordConfirmationField).fill(dataset.mediumPassword);
-
-	await expect(page.locator(passwordStrengthMeter)).toContainText("Medium");
-});
-
-test("Successful Login Test", async ({ browser }) => {
+customTest("Successful Login Test", async ({ browser, testDataForSignIn }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
 	const homePage = "https://magento.softwaretestingboard.com/";
@@ -167,8 +143,10 @@ test("Successful Login Test", async ({ browser }) => {
 
 	await page
 		.locator("//input[@name='login[username]']")
-		.fill("liam.k@mail.com");
-	await page.locator("//input[@name='login[password]']").fill("MediP@ss");
+		.fill(testDataForSignIn.emailAddress);
+	await page
+		.locator("//input[@name='login[password]']")
+		.fill(testDataForSignIn.password);
 	await page.locator("//button[@name='send']").first().click();
 
 	const loggedIn = "//span[@class='logged-in']";
