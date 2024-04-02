@@ -5,6 +5,7 @@ const { pageObjectManager } = require("../pageObjects/pageObjectManager");
 const dataset = JSON.parse(JSON.stringify(require("../utils/testData.json")));
 
 test("Home Page Title Test", async ({ browser }) => {
+	console.log("Home Page Title Test");
 	const context = await browser.newContext();
 	const page = await context.newPage();
 
@@ -16,6 +17,7 @@ test("Home Page Title Test", async ({ browser }) => {
 });
 
 test("Sign In Page Test", async ({ browser }) => {
+	console.log("Sign In Page Test");
 	const context = await browser.newContext();
 	const page = await context.newPage();
 
@@ -26,32 +28,30 @@ test("Sign In Page Test", async ({ browser }) => {
 	await loginPage.validateLandingOnSignInPage();
 });
 
-test.only("Invalid Sign In Test", async ({ browser }) => {
+test("Invalid Sign In Test", async ({ browser }) => {
+	console.log("Invalid Sign In Test");
 	const context = await browser.newContext();
 	const page = await context.newPage();
 
 	const pageManager = new pageObjectManager(page);
 	const loginPage = pageManager.getLoginPage();
+	const signInPage = pageManager.getSignInPage();
 
-	loginPage.goToHomePage();
-	loginPage.goToSignInPage();
-	loginPage.validateLandingOnSignInPage();
+	await loginPage.goToHomePage();
+	await loginPage.goToSignInPage();
+	await loginPage.validateLandingOnSignInPage();
 
-	const alertLocator =
-		"//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']";
+	await signInPage.checkPresenceOfAlert(0);
 
-	const alert = page.locator(alertLocator);
-	await expect(alert).toHaveCount(0);
+	const invalidUsername = "jai@mail.com";
+	const invalidPassword = "p@sswor!d";
 
-	const username = "jai@mail.com";
-	const password = "p@sswor!d";
+	await loginPage.loginAction(invalidUsername, invalidPassword);
 
-	loginPage.loginAction(username, password);
-
-	await expect(alert).toHaveCount(1);
-	await expect(alert).toBeVisible();
-	console.log(await alert.textContent());
-	await expect(alert).toContainText("incorrect");
+	await signInPage.checkPresenceOfAlert(1);
+	await signInPage.checkAlertContentToContain(
+		"The account sign-in was incorrect or your account is disabled temporarily"
+	);
 });
 
 test("Check Mandatory Required Fields", async ({ browser }) => {
@@ -61,30 +61,28 @@ test("Check Mandatory Required Fields", async ({ browser }) => {
 	const pageManager = new pageObjectManager(page);
 	const loginPage = pageManager.getLoginPage();
 	const signInPage = pageManager.getSignInPage();
-
-	const firstNameError = "//div[@id='firstname-error']";
-	const lastNameError = "//div[@id='lastname-error']";
-	const emailAddressError = "//div[@id='email_address-error']";
-	const passwordError = "//div[@id='password-error']";
-	const passwordConfirmationError =
-		"//div[@id='password-confirmation-error']";
-
-	const requiredFieldText = "This is a required field.";
+	const accountPage = pageManager.getAccountPage();
 
 	await loginPage.goToHomePage();
 	await signInPage.createNewAccountButton();
+	accountPage.validateLandingOnAccountPage();
 
-	console.log(await page.title());
-	await expect(page).toHaveTitle("Create New Customer Account");
+	await accountPage.createAccountButton.click();
 
-	await page.locator("//button[@title='Create an Account']").click();
-
-	await expect(page.locator(firstNameError)).toHaveText(requiredFieldText);
-	await expect(page.locator(lastNameError)).toHaveText(requiredFieldText);
-	await expect(page.locator(emailAddressError)).toHaveText(requiredFieldText);
-	await expect(page.locator(passwordError)).toHaveText(requiredFieldText);
-	await expect(page.locator(passwordConfirmationError)).toHaveText(
-		requiredFieldText
+	await expect(accountPage.firstNameError).toHaveText(
+		accountPage.requiredFieldText
+	);
+	await expect(accountPage.lastNameError).toHaveText(
+		accountPage.requiredFieldText
+	);
+	await expect(accountPage.emailAddressError).toHaveText(
+		accountPage.requiredFieldText
+	);
+	await expect(accountPage.passwordError).toHaveText(
+		accountPage.requiredFieldText
+	);
+	await expect(accountPage.passwordConfirmationError).toHaveText(
+		accountPage.requiredFieldText
 	);
 });
 

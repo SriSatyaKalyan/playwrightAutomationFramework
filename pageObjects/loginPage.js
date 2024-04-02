@@ -9,6 +9,9 @@ class LoginPage {
 		this.signInPageButton = page
 			.locator("//li[@class='authorization-link']")
 			.first();
+		this.alertLocator = page.locator(
+			"//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']"
+		);
 	}
 
 	async goToHomePage() {
@@ -26,7 +29,9 @@ class LoginPage {
 	}
 
 	async validateLandingOnSignInPage() {
-		await this.signInPageButton.click();
+		//Printing the title of the SignIn page
+		console.log(await this.page.title());
+		await expect(this.page).toHaveTitle("Customer Login");
 	}
 
 	async loginAction(username, password) {

@@ -7,7 +7,10 @@ Given(
 	"User has navigated to the homepage",
 	{ timeout: 100000 },
 	async function () {
-		const browser = await playwright.chromium.launch();
+		const browser = await playwright.chromium.launch({
+			// headless: false, // Making sure we are running the headless mode set to false
+		});
+
 		const context = await browser.newContext();
 		this.page = await context.newPage();
 
