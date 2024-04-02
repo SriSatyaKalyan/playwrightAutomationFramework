@@ -26,7 +26,7 @@ test("Sign In Page Test", async ({ browser }) => {
 	await loginPage.validateLandingOnSignInPage();
 });
 
-test("Invalid Sign In Test", async ({ browser }) => {
+test.only("Invalid Sign In Test", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
 
