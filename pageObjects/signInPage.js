@@ -26,6 +26,12 @@ class SignInPage {
 		console.log(await this.alertLocator.textContent());
 		await expect(this.alertLocator).toContainText(string);
 	}
+
+	async validateLandingOnSignInPage() {
+		//Printing the title of the SignIn page
+		console.log(await this.page.title());
+		await expect(this.page).toHaveTitle("Customer Login");
+	}
 }
 
 module.exports = { SignInPage };

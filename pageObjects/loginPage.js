@@ -14,24 +14,8 @@ class LoginPage {
 		);
 	}
 
-	async goToHomePage() {
-		await this.page.goto("https://magento.softwaretestingboard.com/");
-	}
-
-	async validateLandingOnHomePage() {
-		//Printing the title of the Landing page
-		console.log(await this.page.title());
-		await expect(this.page).toHaveTitle("Home Page");
-	}
-
 	async goToSignInPage() {
 		await this.signInPageButton.click();
-	}
-
-	async validateLandingOnSignInPage() {
-		//Printing the title of the SignIn page
-		console.log(await this.page.title());
-		await expect(this.page).toHaveTitle("Customer Login");
 	}
 
 	async loginAction(username, password) {

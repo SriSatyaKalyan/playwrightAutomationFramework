@@ -10,10 +10,10 @@ test("Home Page Title Test", async ({ browser }) => {
 	const page = await context.newPage();
 
 	const pageManager = new pageObjectManager(page);
-	const loginPage = pageManager.getLoginPage();
+	const homePage = pageManager.getHomePage();
 
-	await loginPage.goToHomePage();
-	await loginPage.validateLandingOnHomePage();
+	await homePage.goToHomePage();
+	await homePage.validateLandingOnHomePage();
 });
 
 test("Sign In Page Test", async ({ browser }) => {
@@ -22,10 +22,13 @@ test("Sign In Page Test", async ({ browser }) => {
 	const page = await context.newPage();
 
 	const pageManager = new pageObjectManager(page);
+	const signInPage = pageManager.getSignInPage();
 	const loginPage = pageManager.getLoginPage();
+	const homePage = pageManager.getHomePage();
 
-	await loginPage.goToHomePage();
-	await loginPage.validateLandingOnSignInPage();
+	await homePage.goToHomePage();
+	await loginPage.goToSignInPage();
+	await signInPage.validateLandingOnSignInPage();
 });
 
 test("Invalid Sign In Test", async ({ browser }) => {
@@ -36,17 +39,19 @@ test("Invalid Sign In Test", async ({ browser }) => {
 	const pageManager = new pageObjectManager(page);
 	const loginPage = pageManager.getLoginPage();
 	const signInPage = pageManager.getSignInPage();
+	const accountPage = pageManager.getAccountPage();
+	const homePage = pageManager.getHomePage();
 
-	await loginPage.goToHomePage();
+	await homePage.goToHomePage();
 	await loginPage.goToSignInPage();
-	await loginPage.validateLandingOnSignInPage();
+	await signInPage.validateLandingOnSignInPage();
 
 	await signInPage.checkPresenceOfAlert(0);
 
-	const invalidUsername = "jai@mail.com";
-	const invalidPassword = "p@sswor!d";
-
-	await loginPage.loginAction(invalidUsername, invalidPassword);
+	await loginPage.loginAction(
+		accountPage.invalidUsername,
+		accountPage.invalidPassword
+	);
 
 	await signInPage.checkPresenceOfAlert(1);
 	await signInPage.checkAlertContentToContain(
@@ -59,13 +64,13 @@ test("Check Mandatory Required Fields", async ({ browser }) => {
 	const page = await context.newPage();
 
 	const pageManager = new pageObjectManager(page);
-	const loginPage = pageManager.getLoginPage();
 	const signInPage = pageManager.getSignInPage();
 	const accountPage = pageManager.getAccountPage();
+	const homePage = pageManager.getHomePage();
 
-	await loginPage.goToHomePage();
+	await homePage.goToHomePage();
 	await signInPage.createNewAccountButton();
-	accountPage.validateLandingOnAccountPage();
+	await accountPage.validateLandingOnAccountPage();
 
 	await accountPage.createAccountButton.click();
 
@@ -94,30 +99,21 @@ for (const data of dataset) {
 		const page = await context.newPage();
 
 		const pageManager = new pageObjectManager(page);
-		const loginPage = pageManager.getLoginPage();
 		const signInPage = pageManager.getSignInPage();
+		const accountPage = pageManager.getAccountPage();
+		const homePage = pageManager.getHomePage();
 
-		await loginPage.goToHomePage();
+		await homePage.goToHomePage();
 		await signInPage.createNewAccountButton();
+		await accountPage.validateLandingOnAccountPage();
 
-		console.log(await page.title());
-		await expect(page).toHaveTitle("Create New Customer Account");
+		await accountPage.firstNameField.fill(data.firstName);
+		await accountPage.lastNameField.fill(data.lastName);
+		await accountPage.emailAddressField.fill(data.emailAddress);
+		await accountPage.passwordField.fill(data.password);
+		await accountPage.passwordConfirmationField.fill(data.password);
 
-		const firstNameField = "//input[@id='firstname']";
-		const lastNameField = "//input[@id='lastname']";
-		const emailAddressField = "//input[@id='email_address']";
-		const passwordField = "//input[@id='password']";
-		const passwordConfirmationField =
-			"//input[@id='password-confirmation']";
-		const passwordStrengthMeter = "//div[@id='password-strength-meter']";
-
-		await page.locator(firstNameField).fill(data.firstName);
-		await page.locator(lastNameField).fill(data.lastName);
-		await page.locator(emailAddressField).fill(data.emailAddress);
-		await page.locator(passwordField).fill(data.password);
-		await page.locator(passwordConfirmationField).fill(data.password);
-
-		await expect(page.locator(passwordStrengthMeter)).toContainText(
+		await expect(accountPage.passwordStrengthMeter).toContainText(
 			data.strength
 		);
 	});
@@ -126,30 +122,21 @@ for (const data of dataset) {
 customTest("Successful Login Test", async ({ browser, testDataForSignIn }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
-	const homePage = "https://magento.softwaretestingboard.com/";
 
-	await page.goto(homePage);
+	const pageManager = new pageObjectManager(page);
+	const loginPage = pageManager.getLoginPage();
+	const signInPage = pageManager.getSignInPage();
+	const homePage = pageManager.getHomePage();
 
-	// Click on Sign In button
-	const signInLink = "//li[@class='authorization-link']";
-	await page.locator(signInLink).first().click();
+	await homePage.goToHomePage();
+	await loginPage.goToSignInPage();
 
-	const alert = page.locator(
-		"//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']"
-	);
-	await expect(alert).toHaveCount(0);
+	await signInPage.checkPresenceOfAlert(0);
 
-	await page
-		.locator("//input[@name='login[username]']")
-		.fill(testDataForSignIn.emailAddress);
-	await page
-		.locator("//input[@name='login[password]']")
-		.fill(testDataForSignIn.password);
-	await page.locator("//button[@name='send']").first().click();
+	await loginPage.username.fill(testDataForSignIn.emailAddress);
+	await loginPage.password.fill(testDataForSignIn.password);
+	await loginPage.signInSubmit.first().click();
 
-	const loggedIn = "//span[@class='logged-in']";
-	const welcomeMessage = "Welcome, Liam Konisegg!";
-
-	await expect(page).toHaveTitle("Home Page");
-	await expect(page.locator(loggedIn).first()).toContainText(welcomeMessage);
+	await homePage.validateLandingOnHomePage();
+	await homePage.validateWelcomeMessage("Liam Konisegg");
 });
