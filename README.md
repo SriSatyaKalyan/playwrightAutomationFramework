@@ -23,6 +23,12 @@ To run Cucumber files, use the below command
 npx cucumber-js --exit
 ```
 
+To generate cucumber-report, use the below command
+
+```
+npx cucumber-js --tags @Regression --exit --format html:cucumber-report.html
+```
+
 Tests which have been optimized using POM model
 
 * [X] itemActions.spec.js
@@ -44,6 +50,15 @@ Cucumber Tests:
 Working on currently adding more tests. Will include the following features in the framework soon:
 
 * API Testing
-* Cross browser testing
-* BDD Capabilities
+  * Add the capability in package.json >> scripts
 * End to end testing including UI and API flows
+  * Add the capability in package.json >> scripts
+* Cross browser testing
+
+TO-DO:
+
+* [ ] Add console.log statements to all tests as the first line
+* [ ] Add tagging for all tests
+* [ ] Add corresponding scripts
+* [ ] Add connection to Jenkins
+* [ ] Can we have Jenkins results shared in Github as a screenshot!?

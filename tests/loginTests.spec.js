@@ -4,7 +4,7 @@ const { customTest } = require("../utils/testBase");
 const { pageObjectManager } = require("../pageObjects/pageObjectManager");
 const dataset = JSON.parse(JSON.stringify(require("../utils/testData.json")));
 
-test("Home Page Title Test", async ({ page }) => {
+test("@Login Home Page Title Test", async ({ page }) => {
 	console.log("Home Page Title Test");
 	const pageManager = new pageObjectManager(page);
 	const homePage = pageManager.getHomePage();
@@ -13,7 +13,7 @@ test("Home Page Title Test", async ({ page }) => {
 	await homePage.validateLandingOnHomePage();
 });
 
-test("Sign In Page Test", async ({ page }) => {
+test("@Login Sign In Page Test", async ({ page }) => {
 	console.log("Sign In Page Test");
 
 	const pageManager = new pageObjectManager(page);
@@ -26,7 +26,7 @@ test("Sign In Page Test", async ({ page }) => {
 	await signInPage.validateLandingOnSignInPage();
 });
 
-test("Invalid Sign In Test", async ({ page }) => {
+test("@Login Invalid Sign In Test", async ({ page }) => {
 	console.log("Invalid Sign In Test");
 
 	const pageManager = new pageObjectManager(page);
@@ -52,7 +52,7 @@ test("Invalid Sign In Test", async ({ page }) => {
 	);
 });
 
-test("Check Mandatory Required Fields", async ({ page }) => {
+test("@Login Check Mandatory Required Fields", async ({ page }) => {
 	const pageManager = new pageObjectManager(page);
 	const signInPage = pageManager.getSignInPage();
 	const accountPage = pageManager.getAccountPage();
@@ -82,7 +82,7 @@ test("Check Mandatory Required Fields", async ({ page }) => {
 });
 
 for (const data of dataset) {
-	test(`Create Account With "${data.strength}" Strength Password Test`, async ({
+	test(`@Login Create Account With "${data.strength}" Strength Password Test`, async ({
 		page,
 	}) => {
 		const pageManager = new pageObjectManager(page);
@@ -107,21 +107,24 @@ for (const data of dataset) {
 	});
 }
 
-customTest("Successful Login Test", async ({ page, testDataForSignIn }) => {
-	const pageManager = new pageObjectManager(page);
-	const loginPage = pageManager.getLoginPage();
-	const signInPage = pageManager.getSignInPage();
-	const homePage = pageManager.getHomePage();
+customTest(
+	"@Login @Regression Successful Login Test",
+	async ({ page, testDataForSignIn }) => {
+		const pageManager = new pageObjectManager(page);
+		const loginPage = pageManager.getLoginPage();
+		const signInPage = pageManager.getSignInPage();
+		const homePage = pageManager.getHomePage();
 
-	await homePage.goToHomePage();
-	await loginPage.goToSignInPage();
+		await homePage.goToHomePage();
+		await loginPage.goToSignInPage();
 
-	await signInPage.checkPresenceOfAlert(0);
+		await signInPage.checkPresenceOfAlert(0);
 
-	await loginPage.username.fill(testDataForSignIn.emailAddress);
-	await loginPage.password.fill(testDataForSignIn.password);
-	await loginPage.signInSubmit.first().click();
+		await loginPage.username.fill(testDataForSignIn.emailAddress);
+		await loginPage.password.fill(testDataForSignIn.password);
+		await loginPage.signInSubmit.first().click();
 
-	await homePage.validateLandingOnHomePage();
-	await homePage.validateWelcomeMessage("Liam Konisegg");
-});
+		await homePage.validateLandingOnHomePage();
+		await homePage.validateWelcomeMessage("Liam Konisegg");
+	}
+);
