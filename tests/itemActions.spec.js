@@ -84,7 +84,7 @@ test("Compare Products - Add To Compare", async ({ page }) => {
 	await wishListPage.validateLandingOnComparisonPage();
 });
 
-test.only("Skipping Rating when providing Review", async ({ page }) => {
+test("Skipping Rating when providing Review", async ({ page }) => {
 	console.log("Skipping Rating when providing Review");
 	const pageManager = new pageObjectManager(page);
 	const itemPage = pageManager.getItemPage();
@@ -109,26 +109,18 @@ test.only("Skipping Rating when providing Review", async ({ page }) => {
 	await itemPage.missedRatingAlert();
 });
 
-test("Increase Items per Page Count", async ({ browser }) => {
-	const context = await browser.newContext();
-	const page = await context.newPage();
+test("Increase Items per Page Count", async ({ page }) => {
+	console.log("Increase Items per Page Count");
+	const pageManager = new pageObjectManager(page);
+	const homePage = pageManager.getHomePage();
+	const itemPage = pageManager.getItemPage();
 
-	await page.goto("https://magento.softwaretestingboard.com/");
-	await page.goto(
-		"https://magento.softwaretestingboard.com/women/bottoms-women.html"
-	);
+	await homePage.goToHomePage();
+	await homePage.goToWomensBottomsPage();
+	await itemPage.calculatePageCount();
 
-	let pageCount = await page
-		.locator("//select[@data-role='limiter']")
-		.locator("//option[@selected='selected']")
-		.nth(1)
-		.textContent();
-	console.log("The pageCount is: " + pageCount);
-
-	let productCount = await page
-		.locator("//img[@class='product-image-photo']")
-		.count();
-	console.log("The productCount is: " + productCount);
+	let pageCount = itemPage.calculatePageCount();
+	let productCount = itemPage.calculateProductCount();
 
 	console.log(
 		"Are the page and product counts equal?: " + (productCount == pageCount)
@@ -138,17 +130,8 @@ test("Increase Items per Page Count", async ({ browser }) => {
 		"https://magento.softwaretestingboard.com/women/bottoms-women.html?product_list_limit=24"
 	);
 
-	pageCount = await page
-		.locator("//select[@data-role='limiter']")
-		.locator("//option[@selected='selected']")
-		.nth(1)
-		.textContent();
-	console.log("The pageCount is: " + pageCount);
-
-	productCount = await page
-		.locator("//img[@class='product-image-photo']")
-		.count();
-	console.log("The productCount is: " + productCount);
+	pageCount = itemPage.calculatePageCount();
+	productCount = itemPage.calculateProductCount();
 
 	console.log(
 		"Are the page and product counts equal?: " + (productCount == pageCount)

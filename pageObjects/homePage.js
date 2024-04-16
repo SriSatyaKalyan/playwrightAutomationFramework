@@ -57,6 +57,12 @@ class HomePage {
 		);
 	}
 
+	async goToWomensBottomsPage(){
+		await this.page.goto(
+			"https://magento.softwaretestingboard.com/women/bottoms-women.html"
+		);
+	}
+
 	async validateLandingOnHomePage() {
 		//Printing the title of the Landing page
 		console.log(await this.page.title());

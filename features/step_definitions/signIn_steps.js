@@ -16,15 +16,19 @@ Given(
 
 		const pageManager = new pageObjectManager(this.page);
 		this.loginPage = pageManager.getLoginPage();
+		this.homePage = pageManager.getHomePage();
+		this.signInPage = pageManager.getSignInPage();
 
-		await this.loginPage.goToHomePage();
+		await this.homePage.goToHomePage();
 	}
 );
 
 When(
 	"User tries to perform invalid signin with {string} and {string}",
 	async function (usermail, password) {
-		this.loginPage.validateLandingOnSignInPage();
+		// this.signInPage.validateLandingOnSignInPage();
+		await this.homePage.validateLandingOnHomePage();
+		await this.loginPage.goToSignInPage();
 
 		const alertLocator =
 			"//div[@data-bind='html: $parent.prepareMessageForHtml(message.text)']";
@@ -35,10 +39,15 @@ When(
 	}
 );
 
-Then("User sees appropriate error message", async function () {
-	await expect(this.alert).toHaveCount(1);
-	await expect(this.alert).toBeVisible();
-	console.log(await this.alert.textContent());
+Then(
+	"User sees appropriate error message",
+	{ timeout: 100000 },
+	async function () {
+		await this.page.waitForLoadState("networkidle");
+		await expect(this.alert).toHaveCount(1);
+		await expect(this.alert).toBeVisible();
+		console.log(await this.alert.textContent());
 
-	expect(this.alert).toContainText("incorrect");
-});
+		expect(this.alert).toContainText("incorrect");
+	}
+);

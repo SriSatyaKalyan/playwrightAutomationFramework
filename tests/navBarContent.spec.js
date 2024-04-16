@@ -8,8 +8,7 @@ test("Nav Bar Content Test", async ({ browser }) => {
 	const pageManager = new pageObjectManager(page);
 	const homePage = pageManager.getHomePage();
 
-	await pageManager.getLoginPage().goToHomePage();
-
+	await homePage.goToHomePage();
 	await expect(homePage.whatsNew).toContainText("What's New");
 	await expect(homePage.women).toContainText("Women");
 	await expect(homePage.men).toContainText("Men");
@@ -23,11 +22,10 @@ test("Nav Bar Dropdowns - Women", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
 	const pageManager = new pageObjectManager(page);
-
-	await pageManager.getLoginPage().goToHomePage();
-
 	const homePage = pageManager.getHomePage();
 	const womenPage = pageManager.getWomenPage();
+
+	await homePage.goToHomePage();
 
 	// Hovering over Womens navbar button
 	await expect(homePage.women).toContainText("Women");
@@ -51,11 +49,10 @@ test("Nav Bar Dropdowns - Men", async ({ browser }) => {
 	const context = await browser.newContext();
 	const page = await context.newPage();
 	const pageManager = new pageObjectManager(page);
-
-	await pageManager.getLoginPage().goToHomePage();
-
 	const homePage = pageManager.getHomePage();
 	const menPage = pageManager.getMenPage();
+
+	await homePage.goToHomePage();
 
 	//Checking the presence of Men dropdown
 	await expect(homePage.men).toContainText("Men");

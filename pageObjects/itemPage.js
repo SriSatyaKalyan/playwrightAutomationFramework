@@ -32,6 +32,24 @@ class ItemPage {
 	async missedRatingAlert() {
 		expect(this.missedRatingText).toBeVisible();
 	}
+
+	async calculatePageCount() {
+		let pageCount = await this.page
+			.locator("//select[@data-role='limiter']")
+			.locator("//option[@selected='selected']")
+			.nth(1)
+			.textContent();
+		console.log("The pageCount is: " + pageCount);
+		return pageCount;
+	}
+
+	async calculateProductCount() {
+		let productCount = await this.page
+			.locator("//img[@class='product-image-photo']")
+			.count();
+		console.log("The productCount is: " + productCount);
+		return productCount;
+	}
 }
 
 module.exports = { ItemPage };
