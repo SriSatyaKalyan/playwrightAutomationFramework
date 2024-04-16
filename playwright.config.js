@@ -24,6 +24,10 @@ module.exports = defineConfig({
 	reporter: "html",
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 	use: {
+		launchOptions: {
+			args: ["--start-maximized"],
+			// args: ["--window-size=1728,1117"],
+		},
 		/* Base URL to use in actions like `await page.goto('/')`. */
 		// baseURL: 'http://127.0.0.1:3000',
 
