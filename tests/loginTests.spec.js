@@ -28,7 +28,7 @@ test("@Login Home Page Title Test", async ({ page }) => {
 });
 
 //THIS IS THE TEST THAT'S FAILING
-test.only("@Login @Testing Sign In Page Test", async ({ page }) => {
+test("@Login @Testing Sign In Page Test", async ({ page }) => {
 	console.log("Sign In Page Test");
 	// const context = await browser.newContext();
 	// const page = await context.newPage();
