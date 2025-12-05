@@ -57,7 +57,7 @@ class HomePage {
 		);
 	}
 
-	async goToWomensBottomsPage(){
+	async goToWomensBottomsPage() {
 		await this.page.goto(
 			"https://magento.softwaretestingboard.com/women/bottoms-women.html"
 		);

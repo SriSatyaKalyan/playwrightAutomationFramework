@@ -11,11 +11,10 @@
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
-		"@playwright/test": "^1.41.2",
+		"@playwright/test": "^1.57.0",
 		"@types/node": "^20.11.20"
 	},
 	"dependencies": {
-		"@cucumber/cucumber": "^10.3.1",
-    "playwright-core": "npm:playwright-chromium@1.2.1"
+		"@cucumber/cucumber": "^10.3.1"
 	}
 }

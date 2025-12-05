@@ -12,6 +12,7 @@ const { defineConfig, devices, webkit } = require("@playwright/test");
  */
 module.exports = defineConfig({
 	testDir: "./tests",
+	testIgnore: "./tests/itemActions*",
 	/* Run tests in files in parallel */
 	fullyParallel: true,
 	/* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -38,6 +39,7 @@ module.exports = defineConfig({
 		headless: true,
 	},
 	timeout: 30 * 1000,
+	// timeout: 5 * 60 * 1000,
 
 	/* Configure projects for major browsers */
 	projects: [

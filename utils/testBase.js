@@ -1,11 +1,12 @@
+// author: kalyan kallepalli
 const base = require("@playwright/test");
 
 exports.customTest = base.test.extend({
 	testDataForSignIn: {
 		strength: "Medium",
-		firstName: "Liam",
+		firstName: "Bryan",
 		lastName: "Konisegg",
-		emailAddress: "liam.k@mail.com",
+		emailAddress: "bryan.k@gmail.com",
 		password: "MediP@ss",
 	},
 });

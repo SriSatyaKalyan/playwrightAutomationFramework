@@ -1,3 +1,4 @@
+// author: kalyan kallepalli
 const { expect } = require("@playwright/test");
 
 class LoginPage {
@@ -15,10 +16,15 @@ class LoginPage {
 	}
 
 	async goToSignInPage() {
+		console.log("The sign in page is: ", await this.page.title());
+		await this.signInPageButton.waitFor({
+			state: "visible",
+			timeout: 5000,
+		});
 		await this.signInPageButton.click();
 	}
 
-	async loginAction(username = "liam.k@mail.com", password = "MediP@ss") {
+	async loginAction(username = "tony.stark@mail.com", password = "MediP@ss") {
 		await this.username.fill(username);
 		await this.password.fill(password);
 		await this.signInSubmit.first().click();

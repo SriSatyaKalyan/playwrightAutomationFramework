@@ -7,8 +7,6 @@ test("Purchasing Item without specs", async ({ browser }) => {
 	const page = await context.newPage();
 	const loginPage = new LoginPage(page);
 
-	await loginPage.goToHomePage();
-
 	//Travel to Sprite Yoga Straps
 	await page.goto(
 		"https://magento.softwaretestingboard.com/set-of-sprite-yoga-straps.html"

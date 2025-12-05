@@ -1,3 +1,4 @@
+// author: kalyan kallepalli
 @SignInTests
 Feature: ECommerce Validations
 
@@ -19,6 +20,6 @@ Feature: ECommerce Validations
         When User re-enters the passwordConfirmation with "<password>"
         Then User sees appropriate data "<strength>" message
         Examples:
-            | firstName | lastName | emailAddress    | password | strength |
-            | Liam      | Konisegg | liam.k@mail.com | MediP@ss | Medium   |
-            | Natalie   | Konisegg | nate.k@mail.com | WeakPass | Weak     |
+            | firstName | lastName  | emailAddress        | password | strength |
+            | Tony      | Starkness | tony.stark@mail.com | MediP@ss | Medium   |
+            | Natalie   | Konisegg  | nate.k@mail.com     | WeakPass | Weak     |

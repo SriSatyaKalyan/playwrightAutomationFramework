@@ -1,3 +1,4 @@
+// author: kalyan kallepalli
 const { test, expect } = require("@playwright/test");
 const exp = require("constants");
 
@@ -17,20 +18,22 @@ test("Search For Items - Hit Enter", async ({ browser }) => {
 	).toContainText("Search results for: 'Leggings'");
 });
 
-test.skip("Search For Items - Hit Search Icon", async ({ browser }) => {
-	const context = await browser.newContext();
-	const page = await context.newPage();
+//We cannot click the SEARCH ICON as it is being disabled
 
-	await page.goto("https://magento.softwaretestingboard.com/");
+// test.only("Search For Items - Hit Search Icon", async ({ browser }) => {
+// 	const context = await browser.newContext();
+// 	const page = await context.newPage();
 
-	//Search Bar
-	await page.getByPlaceholder("Search entire store here...").fill("Jackets");
-	await page.locator("//*[@id='search_mini_form']").click();
+// 	await page.goto("https://magento.softwaretestingboard.com/");
 
-	await expect(
-		page.locator("//span[@data-ui-id='page-title-wrapper']")
-	).toContainText("Search results for: 'Jackets'");
-});
+// 	//Search Bar
+// 	await page.getByPlaceholder("Search entire store here...").fill("Jackets");
+// 	await page.locator("//*[@id='search_mini_form']").click();
+
+// 	await expect(
+// 		page.locator("//span[@data-ui-id='page-title-wrapper']")
+// 	).toContainText("Search results for: 'Jackets'");
+// });
 
 test("Cart has no items", async ({ browser }) => {
 	const context = await browser.newContext();

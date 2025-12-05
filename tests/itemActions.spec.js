@@ -12,11 +12,15 @@ test("Add Items to Wishlist - Search Page", async ({ page }) => {
 	const wishListPage = pageManager.getWishListPage();
 
 	await homePage.goToHomePage();
+	await loginPage.goToSignInPage();
+	await loginPage.loginAction();
+	await page.pause();
 
 	await homePage.searchForProduct("Harmony Lumaflex Strength Band Kit");
+
 	await homePage.addToWishList();
 
-	await loginPage.loginAction();
+	// await loginPage.loginAction();
 	await wishListPage.validateLandingOnWishListPage();
 	await wishListPage.checkItemInWishList(
 		"Harmony Lumaflex&trade; Strength Band Kit"

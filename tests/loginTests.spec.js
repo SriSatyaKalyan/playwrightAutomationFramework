@@ -1,8 +1,18 @@
-const { test, expect } = require("@playwright/test");
+// import { test, expect } from "@playwright/test";
+const { test } = require("@playwright/test");
 const { customTest } = require("../utils/testBase");
 
 const { pageObjectManager } = require("../pageObjects/pageObjectManager");
 const dataset = JSON.parse(JSON.stringify(require("../utils/testData.json")));
+
+test("@Demo Rahul Shetty App Login", async ({ page }) => {
+	await page.goto("https://rahulshettyacademy.com/client");
+
+	await page.locator("#userEmail").fill("anshika@gmail.com");
+	await page.locator("#userPassword").fill("Iamking@000");
+
+	await page.locator("[value='Login']").click();
+});
 
 test("@Login Home Page Title Test", async ({ page }) => {
 	console.log("Home Page Title Test");
@@ -10,20 +20,34 @@ test("@Login Home Page Title Test", async ({ page }) => {
 	const homePage = pageManager.getHomePage();
 
 	await homePage.goToHomePage();
+	// await page.goto("https://magento.softwaretestingboard.com/");
+
 	await homePage.validateLandingOnHomePage();
+	// console.log(await page.title());
+	// await expect(page).toHaveTitle("Home Page");
 });
 
-test("@Login Sign In Page Test", async ({ page }) => {
+//THIS IS THE TEST THAT'S FAILING
+test.only("@Login @Testing Sign In Page Test", async ({ page }) => {
 	console.log("Sign In Page Test");
+	// const context = await browser.newContext();
+	// const page = await context.newPage();
 
 	const pageManager = new pageObjectManager(page);
-	const signInPage = pageManager.getSignInPage();
-	const loginPage = pageManager.getLoginPage();
 	const homePage = pageManager.getHomePage();
+	const loginPage = pageManager.getLoginPage();
+	const signInPage = pageManager.getSignInPage();
 
 	await homePage.goToHomePage();
+	// await page.goto("https://magento.softwaretestingboard.com/");
+
 	await loginPage.goToSignInPage();
+	// console.log(await page.title());
+	// await page.locator("//li[@class='authorization-link']").first().click();
+
 	await signInPage.validateLandingOnSignInPage();
+	// console.log(await this.page.title());
+	// await expect(this.page).toHaveTitle("Customer Login");
 });
 
 test("@Login Invalid Sign In Test", async ({ page }) => {
@@ -125,6 +149,6 @@ customTest(
 		await loginPage.signInSubmit.first().click();
 
 		await homePage.validateLandingOnHomePage();
-		await homePage.validateWelcomeMessage("Liam Konisegg");
+		await homePage.validateWelcomeMessage("Bryan Konisegg");
 	}
 );

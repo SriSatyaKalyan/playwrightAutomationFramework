@@ -28,8 +28,15 @@ class SignInPage {
 	}
 
 	async validateLandingOnSignInPage() {
-		//Printing the title of the SignIn page
-		console.log(await this.page.title());
+		// Wait for a unique element on the sign-in page (e.g., email input)
+		const emailInput = this.page.locator(
+			"//input[@name='login[username]']"
+		);
+		await emailInput.waitFor({ state: "visible", timeout: 5000 });
+
+		// Now check the title
+		const title = await this.page.title();
+		console.log("SignIn page title:", title);
 		await expect(this.page).toHaveTitle("Customer Login");
 	}
 }
