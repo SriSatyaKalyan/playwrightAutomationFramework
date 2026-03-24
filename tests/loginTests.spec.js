@@ -11,7 +11,7 @@ test("@Demo Rahul Shetty App Login", async ({ page }) => {
 	await page.locator("#userEmail").fill("anshika@gmail.com");
 	await page.locator("#userPassword").fill("Iamking@000");
 
-	await page.locator("[value='Login']").click();
+	await page.locator("[value='Login']").click(); 
 });
 
 test("@Login Home Page Title Test", async ({ page }) => {
