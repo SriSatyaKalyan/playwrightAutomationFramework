@@ -63,6 +63,7 @@ Wait for the answer before writing any code. Do not default to either format.
 3. **Verify the config.** Tests use `config/playwright.config.js`. The `testDir` is `../tests`. Cucumber tests use a separate `cucumber.js` config.
 
 4. **Run tests after changes.** After modifying any test or page object, run the relevant spec to confirm it passes:
+
    ```bash
    npx playwright test <file> --config=config/playwright.config.js
    ```
@@ -77,7 +78,19 @@ Wait for the answer before writing any code. Do not default to either format.
 
 9. **Screenshots and traces** are captured on failure automatically (`screenshot: "only-on-failure"`, `trace: "retain-on-failure"`). Do not add redundant manual screenshot calls.
 
-10. **Do not modify `node_modules/` or generated output** (`reports/`, `test-results/`, `playwright-report/`).
+10. **Use the shared logger — never `console.log()`.** Import and use the shared logger from `src/utils/logger.js` (or `logger.ts`) wherever logging is needed — in tests, step definitions, page objects, and utilities. Do not use raw `console.log()`, `console.warn()`, or `console.error()` calls anywhere in the codebase.
+
+    ```ts
+    import { logger } from '../../src/utils/logger';
+
+    logger.info('Navigating to product page');
+    logger.warn('Element not immediately visible, retrying...');
+    logger.error('Login failed', error);
+    ```
+
+    If the shared logger does not yet exist, create it at `src/utils/logger.ts` before using it.
+
+11. **Do not modify `node_modules/` or generated output** (`reports/`, `test-results/`, `playwright-report/`).
 
 ## Key Conventions
 

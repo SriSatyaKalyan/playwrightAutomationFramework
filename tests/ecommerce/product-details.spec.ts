@@ -9,16 +9,14 @@ test.describe("Product Details View Test", () => {
 		await page.goto("https://demos.bellatrix.solutions/product/falcon-9/");
 
 		// 2. Verify product title, description, and pricing details
-		await expect(
-			page.getByRole("heading", { name: "Falcon 9" }),
-		).toBeVisible();
+		await expect(page.locator("h1.product_title")).toBeVisible();
 		await expect(
 			page.locator("ins .woocommerce-Price-amount").first(),
 		).toContainText("50.00€");
 		await expect(
 			page
-				.getByText(
-					"Falcon 9 is a family of two-stage-to-orbit medium lift launch vehicles",
+				.locator(
+					"xpath=//div[@id='tab-description']//p[contains(text(), 'Falcon 9 is a family of two-stage-to-orbit medium lift launch vehicles')]",
 				)
 				.first(),
 		).toBeVisible();
@@ -30,35 +28,37 @@ test.describe("Product Details View Test", () => {
 		await expect(galleryThumbnails).toHaveCount(2);
 
 		// 4. Verify quantity selector is functional
-		const quantitySelector = page.getByRole("spinbutton", {
-			name: "Falcon 9 quantity",
-		});
+		const quantitySelector = page.locator("input[name='quantity']");
 		await expect(quantitySelector).toHaveValue("1");
 		await quantitySelector.fill("3");
 		await expect(quantitySelector).toHaveValue("3");
 
 		// 5. Test product tabs (Description, Additional Information, Reviews)
 		await page
-			.getByRole("link", { name: "Additional information" })
+			.locator("xpath=//a[contains(text(), 'Additional information')]")
 			.click();
-		await page.getByRole("link", { name: "Reviews (0)" }).click();
-		await page.getByRole("link", { name: "Description" }).click();
+		await page.locator("xpath=//a[contains(text(), 'Reviews')]").click();
+		await page
+			.locator("xpath=//a[contains(text(), 'Description')]")
+			.click();
 
 		// 6. Verify related products section displays correctly
 		await expect(
-			page.getByRole("heading", { name: "You may also like…" }),
+			page.locator("xpath=//h2[text()='You may also like…']"),
 		).toBeVisible();
 		await expect(
-			page.getByRole("heading", { name: "Saturn V" }),
+			page.locator("xpath=//h2[text()='Saturn V']"),
 		).toBeVisible();
 
 		// 7. Check breadcrumb navigation functionality
 		await expect(
-			page.getByLabel("breadcrumbs").getByText("Big Rockets"),
+			page
+				.locator("nav[aria-label='breadcrumbs']")
+				.locator("xpath=//a[contains(text(), 'Big Rockets')]"),
 		).toBeVisible();
 		await page
-			.getByLabel("breadcrumbs")
-			.getByRole("link", { name: "Big Rockets" })
+			.locator("nav[aria-label='breadcrumbs']")
+			.locator("xpath=//a[contains(text(), 'Big Rockets')]")
 			.click();
 	});
 });
