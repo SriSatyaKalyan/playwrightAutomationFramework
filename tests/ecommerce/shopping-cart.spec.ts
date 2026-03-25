@@ -2,7 +2,7 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from "@playwright/test";
-import { ShoppingCartPage } from "../../pageObjects/ShoppingCartPage";
+import { ShoppingCartPage } from "../../src/pageObjects/ShoppingCartPage";
 
 test.describe("E-commerce Core Functionality", () => {
 	test("Shopping Cart Management", async ({ page }) => {

@@ -29,18 +29,18 @@ npx playwright show-report reports
 ## Directory Structure
 
 ```
-config/             # Playwright config (playwright.config.js)
-features/           # Cucumber BDD feature files and step definitions
-  step_definitions/ # Step definition files
-  support/          # Hooks and world setup
-pageObjects/        # Page Object Model classes
-specs/              # Test planning docs
-src/utils/          # testBase.js (custom test fixtures), testData.json
-tests/              # Playwright native spec files (.spec.ts)
-  ecommerce/        # E-commerce test specs
-utils/              # Shared utility helpers
-reports/            # HTML test reports (generated)
-test-results/       # Trace files and artifacts (generated)
+config/                   # Playwright and Cucumber config files
+docs/                     # Test plans and project documentation
+src/
+  pageObjects/            # Page Object Model classes
+  utils/                  # testBase.js (custom fixtures), testData.json, logger.ts
+tests/                    # All test files
+  ecommerce/              # Native Playwright specs (.spec.ts)
+  features/               # Cucumber BDD feature files
+    step_definitions/     # Step definition files
+    support/              # Hooks and world setup
+reports/                  # HTML test reports (generated)
+test-results/             # Trace files and artifacts (generated)
 ```
 
 ## Test Generation — Required First Step
@@ -51,7 +51,7 @@ test-results/       # Trace files and artifacts (generated)
 
 Wait for the answer before writing any code. Do not default to either format.
 
-- **Cucumber** → create a `.feature` file in `features/` and matching step definitions in `features/step_definitions/`
+- **Cucumber** → create a `.feature` file in `tests/features/` and matching step definitions in `tests/features/step_definitions/`
 - **Native Playwright** → create a `.spec.ts` file in `tests/` under the appropriate subdirectory
 
 ## Basic Checks Before Making Changes
@@ -68,7 +68,7 @@ Wait for the answer before writing any code. Do not default to either format.
    npx playwright test <file> --config=config/playwright.config.js
    ```
 
-5. **Match file type to test type.** Native Playwright tests are `.spec.ts` in `tests/`. Cucumber tests are `.feature` files in `features/` with matching step definitions.
+5. **Match file type to test type.** Native Playwright tests are `.spec.ts` in `tests/`. Cucumber tests are `.feature` files in `tests/features/` with matching step definitions in `tests/features/step_definitions/`.
 
 6. **Tag regression tests.** Any test intended for the regression suite must be tagged `@Regression` in the feature file or via `test.describe` annotation.
 
