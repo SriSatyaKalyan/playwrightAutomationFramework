@@ -30,7 +30,7 @@ jobs:
               run: npx playwright install --with-deps
 
             - name: Run all tests
-              run: npm run all -- --headed=false
+              run: npm run all
 
             # # Customize this step as needed
             # - name: Build application
