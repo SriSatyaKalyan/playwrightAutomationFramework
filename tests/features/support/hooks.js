@@ -1,7 +1,7 @@
 const { Before, After } = require("@cucumber/cucumber");
 const playwright = require("@playwright/test");
 
-const { pageObjectManager } = require("../../pageObjects/pageObjectManager");
+const { pageObjectManager } = require("../../../src/pageObjects/pageObjectManager");
 
 Before(async function () {
 	console.log("Opening the driver");

@@ -4,8 +4,8 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"all": "npx playwright test",
-		"regression": "npx playwright test --grep @Regression"
+		"all": "npx playwright test --config=config/playwright.config.js",
+		"regression": "npx playwright test --config=config/playwright.config.js --grep @Regression"
 	},
 	"keywords": [],
 	"author": "",

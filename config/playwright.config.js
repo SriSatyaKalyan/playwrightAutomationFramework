@@ -11,8 +11,9 @@ const { defineConfig, devices, webkit } = require("@playwright/test");
  * @see https://playwright.dev/docs/test-configuration
  */
 module.exports = defineConfig({
-	testDir: "./tests",
-	testIgnore: "./tests/itemActions*",
+	testDir: "../tests",
+	testIgnore: "**/itemActions*",
+	outputDir: "../test-results",
 	/* Run tests in files in parallel */
 	fullyParallel: true,
 	/* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -22,7 +23,7 @@ module.exports = defineConfig({
 	/* Opt out of parallel tests on CI. */
 	workers: process.env.CI ? 1 : undefined,
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
-	reporter: "html",
+	reporter: [["html", { outputFolder: "../reports" }]],
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 	use: {
 		launchOptions: {
@@ -51,7 +52,7 @@ module.exports = defineConfig({
 				trace: "retain-on-failure",
 				browserName: "chromium",
 				screenshot: "only-on-failure",
-				headless: true,
+				headless: false,
 			},
 		},
 		// {
