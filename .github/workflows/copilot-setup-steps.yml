@@ -1,34 +1,37 @@
 name: "Copilot Setup Steps"
 
 on:
-  workflow_dispatch:
-  push:
-    paths:
-      - .github/workflows/copilot-setup-steps.yml
-  pull_request:
-    paths:
-      - .github/workflows/copilot-setup-steps.yml
+    workflow_dispatch:
+    pull_request:
+        branches:
+            - main
+    push:
+        branches:
+            - main
 
 jobs:
-  copilot-setup-steps:
-    runs-on: ubuntu-latest
+    copilot-setup-steps:
+        runs-on: ubuntu-latest
 
-    permissions:
-      contents: read
+        permissions:
+            contents: read
 
-    steps:
-    - uses: actions/checkout@v4
+        steps:
+            - uses: actions/checkout@v4
 
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: lts/*
 
-    - name: Install dependencies
-      run: npm ci
+            - name: Install dependencies
+              run: npm ci
 
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+            - name: Install Playwright Browsers
+              run: npx playwright install --with-deps
 
-    # Customize this step as needed
-    - name: Build application
-      run: npx run build
+            - name: Run all tests
+              run: npm run all
+
+            # # Customize this step as needed
+            # - name: Build application
+            #   run: npm run build
