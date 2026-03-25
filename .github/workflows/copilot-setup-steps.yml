@@ -30,10 +30,8 @@ jobs:
               run: npx playwright install --with-deps
 
             - name: Run all tests
-              run: npm run all
-              env:
-                  CI: true
+              run: npm run all -- --headed=false
 
-            # Customize this step as needed
-            - name: Build application
-              run: npm run build
+            # # Customize this step as needed
+            # - name: Build application
+            #   run: npm run build
