@@ -61,6 +61,7 @@ application behavior.
   - Includes a comment with the step text before each step execution. Do not duplicate comments if step requires
     multiple actions.
   - Always use best practices from the log when generating tests.
+  - Add appropriate logging for each step in the generated test to ensure readability and maintainability. Do not use console.log().
 
    <example-generation>
    For following plan:
