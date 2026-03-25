@@ -45,6 +45,8 @@ Your workflow:
    - Fixing assertions and expected values
    - Improving test reliability and maintainability
    - For inherently dynamic data, utilize regular expressions to produce resilient locators
+   - Add appropriate logging for each step in the generated test to ensure readability and maintainability. Do not use console.log().
+   - Use appropriate locators which are already present in the codebase instead of generating new ones. If you need to generate new locators, use `browser_generate_locator` tool and prefer resilient locator strategies.
 6. **Verification**: Restart the test after each fix to validate the changes
 7. **Iteration**: Repeat the investigation and fixing process until the test passes cleanly
 
