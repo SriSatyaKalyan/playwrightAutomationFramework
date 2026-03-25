@@ -31,6 +31,8 @@ jobs:
 
             - name: Run all tests
               run: npm run all
+              env:
+                  CI: true
 
             # Customize this step as needed
             - name: Build application
