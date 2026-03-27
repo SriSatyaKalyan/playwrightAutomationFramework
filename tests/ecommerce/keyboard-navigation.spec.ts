@@ -4,7 +4,7 @@ import { test, expect } from "@playwright/test";
 import { logger } from "../../src/utils/logger";
 
 test.describe("Accessibility Testing", () => {
-	test.fixme("Keyboard Navigation", async ({ page }) => {
+	test.skip("Keyboard Navigation", async ({ page }) => {
 		logger.info("Starting Keyboard Navigation accessibility test");
 
 		// Navigate to Bellatrix Solutions e-commerce homepage
