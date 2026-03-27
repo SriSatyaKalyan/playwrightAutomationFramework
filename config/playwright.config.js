@@ -21,7 +21,7 @@ module.exports = defineConfig({
 	/* Retry on CI only */
 	retries: process.env.CI ? 2 : 0,
 	/* Opt out of parallel tests on CI. */
-	workers: process.env.CI ? 1 : undefined,
+	workers: process.env.CI ? 4 : undefined,
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
 	reporter: [
 		["html", { outputFolder: "../reports" }],
@@ -41,6 +41,7 @@ module.exports = defineConfig({
 		browserName: "chromium",
 		screenshot: "only-on-failure",
 		headless: true,
+		// headless: !!process.env.CI,
 	},
 	timeout: 30 * 1000,
 	// timeout: 5 * 60 * 1000,
@@ -55,8 +56,6 @@ module.exports = defineConfig({
 				trace: "retain-on-failure",
 				browserName: "chromium",
 				screenshot: "only-on-failure",
-				headless: true,
-				// headless: !!process.env.CI,
 			},
 		},
 		// {
@@ -73,6 +72,33 @@ module.exports = defineConfig({
 		// 		},
 		// 	},
 		// },
+		{
+			name: "ipad",
+			use: {
+				...devices["iPad Pro 11"],
+				trace: "retain-on-failure",
+				screenshot: "only-on-failure",
+				browserName: "chromium",
+			},
+		},
+		{
+			name: "iphone",
+			use: {
+				...devices["iPhone 13"],
+				trace: "retain-on-failure",
+				screenshot: "only-on-failure",
+				browserName: "chromium",
+			},
+		},
+		{
+			name: "samsung",
+			use: {
+				...devices["Galaxy S9+"],
+				trace: "retain-on-failure",
+				screenshot: "only-on-failure",
+				browserName: "chromium",
+			},
+		},
 	],
 
 	/* Run your local dev server before starting the tests */
