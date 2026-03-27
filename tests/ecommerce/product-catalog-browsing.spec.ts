@@ -9,7 +9,7 @@ test.describe("E-commerce Core Functionality", () => {
 		logger.info("Starting Product Catalog Browsing test");
 
 		logger.info("Navigating to home page");
-		await page.goto("https://demos.bellatrix.solutions/");
+		await page.goto("/");
 
 		logger.info("Verifying page title and basic structure");
 		await expect(page).toHaveTitle(/Bellatrix Demos/);

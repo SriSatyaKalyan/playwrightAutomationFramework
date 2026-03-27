@@ -34,7 +34,7 @@ module.exports = defineConfig({
 			// args: ["--window-size=1728,1117"],
 		},
 		/* Base URL to use in actions like `await page.goto('/')`. */
-		// baseURL: 'http://127.0.0.1:3000',
+		baseURL: "https://demos.bellatrix.solutions",
 
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 		trace: "retain-on-failure",
@@ -55,7 +55,8 @@ module.exports = defineConfig({
 				trace: "retain-on-failure",
 				browserName: "chromium",
 				screenshot: "only-on-failure",
-				headless: !!process.env.CI,
+				headless: true,
+				// headless: !!process.env.CI,
 			},
 		},
 		// {
@@ -71,31 +72,6 @@ module.exports = defineConfig({
 		// 			height: 720,
 		// 		},
 		// 	},
-		// },
-		//commented below section because it is repeating tests
-		// {
-		//   name: "firefox",
-		//   use: { ...devices["Desktop Firefox"] },
-		// },
-
-		/* Test against mobile viewports. */
-		// {
-		//   name: 'Mobile Chrome',
-		//   use: { ...devices['Pixel 5'] },
-		// },
-		// {
-		//   name: 'Mobile Safari',
-		//   use: { ...devices['iPhone 12'] },
-		// },
-
-		/* Test against branded browsers. */
-		// {
-		//   name: 'Microsoft Edge',
-		//   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-		// },
-		// {
-		//   name: 'Google Chrome',
-		//   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
 		// },
 	],
 

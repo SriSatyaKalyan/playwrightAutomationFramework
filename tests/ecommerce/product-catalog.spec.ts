@@ -10,7 +10,7 @@ test.describe("E-commerce Core Functionality", () => {
 
 		// Step 1: Navigate to the home page to start product catalog browsing test
 		logger.info("Navigating to Bellatrix e-commerce demo site");
-		await page.goto("https://demos.bellatrix.solutions/");
+		await page.goto("/");
 
 		// Step 2: Verify all products are displayed - check that all 5 products are shown
 		logger.info("Verifying product count display");

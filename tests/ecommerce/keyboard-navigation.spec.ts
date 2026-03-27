@@ -9,7 +9,7 @@ test.describe("Accessibility Testing", () => {
 
 		// Navigate to Bellatrix Solutions e-commerce homepage
 		logger.info("Navigating to Bellatrix e-commerce demo site");
-		await page.goto("https://demos.bellatrix.solutions/");
+		await page.goto("/");
 
 		// Step 1: Verify top-level keyboard navigation works (Tab through header links)
 		logger.info("Starting keyboard navigation with Tab key");

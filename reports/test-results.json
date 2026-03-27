@@ -1,0 +1,422 @@
+{
+  "config": {
+    "configFile": "/Users/srisatyakalyankallepalli/Documents/GitHub/playwrightAutomationFramework/config/playwright.config.js",
+    "rootDir": "/Users/srisatyakalyankallepalli/Documents/GitHub/playwrightAutomationFramework/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 5
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "../reports"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "../reports/test-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/srisatyakalyankallepalli/Documents/GitHub/playwrightAutomationFramework/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 5
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/srisatyakalyankallepalli/Documents/GitHub/playwrightAutomationFramework/tests",
+        "testIgnore": [
+          "**/itemActions*"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.57.0",
+    "workers": 5,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "ecommerce/keyboard-navigation.spec.ts",
+      "file": "ecommerce/keyboard-navigation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Accessibility Testing",
+          "file": "ecommerce/keyboard-navigation.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Keyboard Navigation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "fixme",
+                      "location": {
+                        "file": "/Users/srisatyakalyankallepalli/Documents/GitHub/playwrightAutomationFramework/tests/ecommerce/keyboard-navigation.spec.ts",
+                        "line": 7,
+                        "column": 7
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": -1,
+                      "parallelIndex": -1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-27T18:05:21.573Z",
+                      "annotations": [
+                        {
+                          "type": "fixme",
+                          "location": {
+                            "file": "/Users/srisatyakalyankallepalli/Documents/GitHub/playwrightAutomationFramework/tests/ecommerce/keyboard-navigation.spec.ts",
+                            "line": 7,
+                            "column": 7
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "43b919872fb20619d2cf-acc26eca519a62950912",
+              "file": "ecommerce/keyboard-navigation.spec.ts",
+              "line": 7,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ecommerce/product-catalog-browsing.spec.ts",
+      "file": "ecommerce/product-catalog-browsing.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "E-commerce Core Functionality",
+          "file": "ecommerce/product-catalog-browsing.spec.ts",
+          "line": 7,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Product Catalog Browsing",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2333,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[2026-03-27T18:05:22.710Z] [INFO] Starting Product Catalog Browsing test\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:22.710Z] [INFO] Navigating to home page\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:24.255Z] [INFO] Verifying page title and basic structure\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:24.330Z] [INFO] Verifying all 5 products are displayed with correct information\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:24.435Z] [INFO] ✓ Product \"Falcon 9\" found and visible\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:24.485Z] [INFO] ✓ Product \"Proton Rocket\" found and visible\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:24.562Z] [INFO] ✓ Product \"Proton-M\" found and visible\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:24.586Z] [INFO] ✓ Product \"Saturn V\" found and visible\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:24.603Z] [INFO] ✓ Product \"Falcon Heavy\" found and visible\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:24.603Z] [INFO] Verifying sale badges are present on discounted products\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:24.628Z] [INFO] Verifying pricing information displays correctly\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:24.671Z] [INFO] Verifying add to cart buttons for purchasable products\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:24.692Z] [INFO] Verifying read more button for products requiring additional info\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:24.701Z] [INFO] Verifying product count and sorting controls\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:24.716Z] [INFO] Product Catalog Browsing test completed successfully\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-27T18:05:22.037Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d6c40cdccc3eb57e1bcc-0fc13b7b413afc0689a9",
+              "file": "ecommerce/product-catalog-browsing.spec.ts",
+              "line": 8,
+              "column": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ecommerce/product-catalog.spec.ts",
+      "file": "ecommerce/product-catalog.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "E-commerce Core Functionality",
+          "file": "ecommerce/product-catalog.spec.ts",
+          "line": 7,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Product Catalog Browsing",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 2293,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "[2026-03-27T18:05:22.709Z] [INFO] Starting Product Catalog Browsing test\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:22.710Z] [INFO] Navigating to Bellatrix e-commerce demo site\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:24.244Z] [INFO] Verifying product count display\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:24.295Z] [INFO] Verifying all 5 product headings are visible\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:24.487Z] [INFO] Verifying sale badges are present on discounted products\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:24.580Z] [INFO] Verifying pricing information displays correctly\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:24.631Z] [INFO] Verifying Add to cart and Read more buttons are present\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:24.655Z] [INFO] Verifying page images are loaded properly\n"
+                        },
+                        {
+                          "text": "[2026-03-27T18:05:24.663Z] [INFO] Product Catalog Browsing test completed successfully\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-27T18:05:22.035Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1b2512e1fdc5cb8fd230-b380f9c66cf1e765c2c4",
+              "file": "ecommerce/product-catalog.spec.ts",
+              "line": 8,
+              "column": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ecommerce/product-details.spec.ts",
+      "file": "ecommerce/product-details.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Product Details View Test",
+          "file": "ecommerce/product-details.spec.ts",
+          "line": 7,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Product Details View",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 2795,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-27T18:05:22.036Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "43fb4f0533372440f5bd-048216d70616a6b97d2d",
+              "file": "ecommerce/product-details.spec.ts",
+              "line": 8,
+              "column": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "ecommerce/shopping-cart.spec.ts",
+      "file": "ecommerce/shopping-cart.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "E-commerce Core Functionality",
+          "file": "ecommerce/shopping-cart.spec.ts",
+          "line": 7,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Shopping Cart Management",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 7224,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-27T18:05:22.031Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c0b562d05918566207ef-5fc741d4d9d07f17da90",
+              "file": "ecommerce/shopping-cart.spec.ts",
+              "line": 8,
+              "column": 6
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-03-27T18:05:21.549Z",
+    "duration": 8158.424999999999,
+    "expected": 4,
+    "skipped": 1,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
