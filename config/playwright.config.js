@@ -21,7 +21,7 @@ module.exports = defineConfig({
 	/* Retry on CI only */
 	retries: process.env.CI ? 2 : 0,
 	/* Opt out of parallel tests on CI. */
-	workers: process.env.CI ? 4 : undefined,
+	workers: process.env.CI ? process.env.PW_WORKERS || "50%" : undefined,
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
 	reporter: [
 		["html", { outputFolder: "../reports" }],
@@ -58,20 +58,20 @@ module.exports = defineConfig({
 				screenshot: "only-on-failure",
 			},
 		},
-		// {
-		// 	name: "safari",
-		// 	use: {
-		// 		...devices["Desktop Safari"],
-		// 		trace: "retain-on-failure",
-		// 		browserName: "chromium",
-		// 		screenshot: "only-on-failure",
-		// 		headless: true,
-		// 		viewport: {
-		// 			width: 850,
-		// 			height: 720,
-		// 		},
-		// 	},
-		// },
+		{
+			name: "safari",
+			use: {
+				...devices["Desktop Safari"],
+				trace: "retain-on-failure",
+				browserName: "chromium",
+				screenshot: "only-on-failure",
+				headless: true,
+				viewport: {
+					width: 850,
+					height: 720,
+				},
+			},
+		},
 		{
 			name: "ipad",
 			use: {
@@ -90,15 +90,15 @@ module.exports = defineConfig({
 				browserName: "chromium",
 			},
 		},
-		{
-			name: "samsung",
-			use: {
-				...devices["Galaxy S9+"],
-				trace: "retain-on-failure",
-				screenshot: "only-on-failure",
-				browserName: "chromium",
-			},
-		},
+		// {
+		// 	name: "samsung",
+		// 	use: {
+		// 		...devices["Galaxy S9+"],
+		// 		trace: "retain-on-failure",
+		// 		screenshot: "only-on-failure",
+		// 		browserName: "chromium",
+		// 	},
+		// },
 	],
 
 	/* Run your local dev server before starting the tests */
