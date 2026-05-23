@@ -21,7 +21,7 @@ module.exports = defineConfig({
 	/* Retry on CI only */
 	retries: process.env.CI ? 2 : 0,
 	/* Opt out of parallel tests on CI. */
-	workers: process.env.CI ? 1 : undefined,
+	workers: process.env.CI ? process.env.PW_WORKERS || "50%" : undefined,
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
 	reporter: [
 		["html", { outputFolder: "../reports" }],
@@ -41,6 +41,7 @@ module.exports = defineConfig({
 		browserName: "chromium",
 		screenshot: "only-on-failure",
 		headless: true,
+		// headless: !!process.env.CI,
 	},
 	timeout: 30 * 1000,
 	// timeout: 5 * 60 * 1000,
@@ -55,22 +56,47 @@ module.exports = defineConfig({
 				trace: "retain-on-failure",
 				browserName: "chromium",
 				screenshot: "only-on-failure",
+			},
+		},
+		{
+			name: "safari",
+			use: {
+				...devices["Desktop Safari"],
+				trace: "retain-on-failure",
+				browserName: "chromium",
+				screenshot: "only-on-failure",
 				headless: true,
-				// headless: !!process.env.CI,
+				viewport: {
+					width: 850,
+					height: 720,
+				},
+			},
+		},
+		{
+			name: "ipad",
+			use: {
+				...devices["iPad Pro 11"],
+				trace: "retain-on-failure",
+				screenshot: "only-on-failure",
+				browserName: "chromium",
+			},
+		},
+		{
+			name: "iphone",
+			use: {
+				...devices["iPhone 13"],
+				trace: "retain-on-failure",
+				screenshot: "only-on-failure",
+				browserName: "chromium",
 			},
 		},
 		// {
-		// 	name: "safari",
+		// 	name: "samsung",
 		// 	use: {
-		// 		...devices["Desktop Safari"],
+		// 		...devices["Galaxy S9+"],
 		// 		trace: "retain-on-failure",
-		// 		browserName: "chromium",
 		// 		screenshot: "only-on-failure",
-		// 		headless: true,
-		// 		viewport: {
-		// 			width: 850,
-		// 			height: 720,
-		// 		},
+		// 		browserName: "chromium",
 		// 	},
 		// },
 	],

@@ -5,7 +5,11 @@ import { test, expect } from "@playwright/test";
 import { ShoppingCartPage } from "../../src/pageObjects/ShoppingCartPage";
 
 test.describe("E-commerce Core Functionality", () => {
-	test("Shopping Cart Management", async ({ page }) => {
+	test("Shopping Cart Management", async ({ page }, testInfo) => {
+		test.fixme(
+			testInfo.project.name === "iphone",
+			"Mobile cart UI needs redesign - Ticket #123",
+		);
 		const shoppingCartPage = new ShoppingCartPage(page);
 
 		// 1. Add a product to cart from product page
