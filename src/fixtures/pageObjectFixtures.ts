@@ -1,9 +1,11 @@
 import { test as base } from "@playwright/test";
+import { ProductCatalogPage } from "../pageObjects/ProductCatalogPage";
 import { ProductDetailsPage } from "../pageObjects/ProductDetailsPage";
 import { ShoppingCartPage } from "../pageObjects/ShoppingCartPage";
 import { logger } from "../utils/logger";
 
 type PageObjectFixtures = {
+	productCatalogPage: ProductCatalogPage;
 	productDetailsPage: ProductDetailsPage;
 	shoppingCartPage: ShoppingCartPage;
 };
@@ -19,6 +21,12 @@ type PageObjectFixtures = {
  *   });
  */
 export const test = base.extend<PageObjectFixtures>({
+	productCatalogPage: async ({ page }, use) => {
+		logger.info("Setting up ProductCatalogPage fixture");
+		await use(new ProductCatalogPage(page));
+		logger.info("Tearing down ProductCatalogPage fixture");
+	},
+
 	productDetailsPage: async ({ page }, use) => {
 		logger.info("Setting up ProductDetailsPage fixture");
 		await use(new ProductDetailsPage(page));
