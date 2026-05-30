@@ -1,7 +1,7 @@
 // spec: docs/bellatrix-ecommerce-test-plan.md
 // seed: tests/seed.spec.ts
 
-import { test, expect } from "@playwright/test";
+import { test, expect } from "../../src/fixtures/pageObjectFixtures";
 import { logger } from "../../src/utils/logger";
 
 test.describe("E-commerce Core Functionality", () => {
