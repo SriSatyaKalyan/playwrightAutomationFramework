@@ -6,7 +6,7 @@ import { logger } from "../../src/utils/logger";
 import { productCatalogData } from "../../src/utils/testData";
 
 test.describe("Product Catalog Presence Test", () => {
-	test.only("Product Catalog Browsing", async ({ productCatalogPage }) => {
+	test("Product Catalog Browsing", async ({ productCatalogPage }) => {
 		logger.info("Starting Product Catalog Browsing test");
 		logger.info(
 			"Navigating to home page and verifying products are present with the appropriate sale and discount information. Ensuring that the elements on the page are visible and contain the correct information.",

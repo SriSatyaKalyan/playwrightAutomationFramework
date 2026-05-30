@@ -3,38 +3,34 @@ import { expect, type Locator, type Page } from "@playwright/test";
 export class ProductCatalogPage {
 	constructor(private readonly page: Page) {}
 
+	get mainContent(): Locator {
+		return this.page.getByRole("main");
+	}
+
 	get productsList(): Locator {
-		return this.page
-			.locator(
-				'ul[class*="products"], .woocommerce-loop, [class*="shop-loop"]',
-			)
-			.first();
+		return this.mainContent.getByRole("list").first();
 	}
 
 	get productCountText(): Locator {
-		return this.page
-			.locator(
-				'p[class*="result-count"], .woocommerce-result-count, [class*="showing-results"]',
-			)
+		return this.mainContent
+			.getByText(/showing\s+(all\s+)?\d+\s+results?/i)
 			.first();
 	}
 
 	get saleBadges(): Locator {
-		return this.productsList.locator(
-			'li[class*="product"] .onsale, li[class*="product"] [class*="onsale"]',
-		);
+		return this.productsList.getByText(/^Sale!$/i);
 	}
 
 	get addToCartButtons(): Locator {
-		return this.productsList.locator(
-			'a[class*="add_to_cart"], button[class*="add_to_cart"], [data-action="add-to-cart"], a[href*="add-to-cart"]',
-		);
+		return this.productsList.getByRole("link", {
+			name: /Add .+ to your cart/i,
+		});
 	}
 
 	get readMoreButtons(): Locator {
-		return this.productsList
-			.locator('a[class*="button"], button')
-			.filter({ hasText: /read.?more/i });
+		return this.productsList.getByRole("link", {
+			name: /Read more about/i,
+		});
 	}
 
 	get brandImage(): Locator {
@@ -42,20 +38,25 @@ export class ProductCatalogPage {
 	}
 
 	productCard(productName: string): Locator {
-		return this.productsList
-			.locator('li[class*="product"].type-product')
-			.filter({ hasText: new RegExp(productName, "i") });
+		return this.productsList.getByRole("listitem").filter({
+			hasText: new RegExp(
+				`^\\s*${this.escapeRegex(productName)}\\b`,
+				"i",
+			),
+		});
 	}
 
 	productHeading(productName: string): Locator {
-		return this.page.getByRole("heading", { name: productName });
+		return this.mainContent.getByRole("heading", {
+			name: new RegExp(`^${this.escapeRegex(productName)}$`, "i"),
+			level: 2,
+		});
 	}
 
 	priceInProductCard(productName: string, amount: string): Locator {
-		return this.productCard(productName)
-			.locator('[class*="price"], .amount, [data-price]')
-			.filter({ hasText: new RegExp(this.escapeRegex(amount), "i") })
-			.first();
+		return this.productCard(productName).filter({
+			hasText: new RegExp(this.escapeRegex(amount), "i"),
+		});
 	}
 
 	private escapeRegex(text: string): string {
@@ -84,7 +85,9 @@ export class ProductCatalogPage {
 
 	async expectPricesVisible(prices: string[]): Promise<void> {
 		for (const price of prices) {
-			await expect(this.page.getByText(price).first()).toBeVisible();
+			await expect(this.mainContent).toContainText(
+				new RegExp(this.escapeRegex(price), "i"),
+			);
 		}
 	}
 
