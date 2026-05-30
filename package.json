@@ -6,7 +6,10 @@
 	"scripts": {
 		"all": "npx playwright test --config=config/playwright.config.js",
 		"allHeaded": "npx playwright test --headed --config=config/playwright.config.js",
-		"regression": "npx playwright test --config=config/playwright.config.js --grep @Regression"
+		"regression": "npx playwright test --config=config/playwright.config.js --grep @Regression",
+		"cucumber": "npx cucumber-js",
+		"cucumber:all": "npx cucumber-js tests/features/**/*.feature",
+		"cucumber:sale-catalog": "npx cucumber-js tests/features/product-catalog-sale-validation.feature"
 	},
 	"keywords": [],
 	"author": "",
