@@ -1,20 +1,19 @@
 const { Before, After } = require("@cucumber/cucumber");
-const playwright = require("@playwright/test");
+const { chromium } = require("@playwright/test");
 
-const { pageObjectManager } = require("../../../src/pageObjects/pageObjectManager");
+const DEFAULT_TIMEOUT = 60_000;
 
 Before(async function () {
-	console.log("Opening the driver");
-	const browser = await playwright.chromium.launch({
-		// headless: false, // Making sure we are running the headless mode set to false
+	this.setDefaultTimeout?.(DEFAULT_TIMEOUT);
+	this.browser = await chromium.launch({
 		args: ["--start-maximized"],
 	});
 
-	const context = await browser.newContext();
-	this.page = await context.newPage();
-	this.pageManager = new pageObjectManager(this.page);
+	this.context = await this.browser.newContext();
+	this.page = await this.context.newPage();
 });
 
-After(function () {
-	console.log("Quitting the driver");
+After(async function () {
+	await this.context?.close();
+	await this.browser?.close();
 });

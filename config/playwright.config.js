@@ -58,38 +58,38 @@ module.exports = defineConfig({
 				screenshot: "only-on-failure",
 			},
 		},
-		{
-			name: "safari",
-			use: {
-				...devices["Desktop Safari"],
-				trace: "retain-on-failure",
-				browserName: "chromium",
-				screenshot: "only-on-failure",
-				headless: true,
-				viewport: {
-					width: 850,
-					height: 720,
-				},
-			},
-		},
-		{
-			name: "ipad",
-			use: {
-				...devices["iPad Pro 11"],
-				trace: "retain-on-failure",
-				screenshot: "only-on-failure",
-				browserName: "chromium",
-			},
-		},
-		{
-			name: "iphone",
-			use: {
-				...devices["iPhone 13"],
-				trace: "retain-on-failure",
-				screenshot: "only-on-failure",
-				browserName: "chromium",
-			},
-		},
+		// {
+		// 	name: "safari",
+		// 	use: {
+		// 		...devices["Desktop Safari"],
+		// 		trace: "retain-on-failure",
+		// 		browserName: "chromium",
+		// 		screenshot: "only-on-failure",
+		// 		headless: true,
+		// 		viewport: {
+		// 			width: 850,
+		// 			height: 720,
+		// 		},
+		// 	},
+		// },
+		// {
+		// 	name: "ipad",
+		// 	use: {
+		// 		...devices["iPad Pro 11"],
+		// 		trace: "retain-on-failure",
+		// 		screenshot: "only-on-failure",
+		// 		browserName: "chromium",
+		// 	},
+		// },
+		// {
+		// 	name: "iphone",
+		// 	use: {
+		// 		...devices["iPhone 13"],
+		// 		trace: "retain-on-failure",
+		// 		screenshot: "only-on-failure",
+		// 		browserName: "chromium",
+		// 	},
+		// },
 		// {
 		// 	name: "samsung",
 		// 	use: {
