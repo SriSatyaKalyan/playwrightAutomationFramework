@@ -37,7 +37,9 @@ jobs:
 
             - name: Resolve Playwright version
               id: playwright-version
-              run: echo "version=$(node -p \"require('./package-lock.json').packages['node_modules/@playwright/test'].version\")" >> "$GITHUB_OUTPUT"
+              run: |
+                  PLAYWRIGHT_VERSION=$(node -e "process.stdout.write(require('./package-lock.json').packages['node_modules/@playwright/test'].version)")
+                  echo "version=$PLAYWRIGHT_VERSION" >> "$GITHUB_OUTPUT"
 
             - name: Cache Playwright browsers
               uses: actions/cache@v4
@@ -59,7 +61,7 @@ jobs:
 
             # ── Python setup with pip cache ────────────────────────────────────────
             - name: Set up Python
-              if: always()
+              if: always() && github.ref == 'refs/heads/main'
               uses: actions/setup-python@v5
               with:
                   python-version: "3.11"
@@ -68,12 +70,12 @@ jobs:
 
             # ── Python metrics dependencies ────────────────────────────────────────
             - name: Install Python metrics dependencies
-              if: always()
+              if: always() && github.ref == 'refs/heads/main'
               run: pip install requests python-snappy
 
             # ── Secret verification ────────────────────────────────────────────────
             - name: Verify Grafana secrets are set
-              if: always()
+              if: always() && github.ref == 'refs/heads/main'
               run: |
                   if [ -z "$GRAFANA_CLOUD_URL" ]; then
                     echo "❌ GRAFANA_CLOUD_URL is empty"
@@ -109,7 +111,8 @@ jobs:
 
             # ── Parse results & push metrics to Grafana Cloud ─────────────────────
             - name: Parse test results and push to Grafana Cloud
-              if: always()
+              if: always() && github.ref == 'refs/heads/main'
+              continue-on-error: true
               env:
                   GRAFANA_CLOUD_URL: ${{ secrets.GRAFANA_CLOUD_URL }}
                   GRAFANA_CLOUD_USER: ${{ secrets.GRAFANA_CLOUD_USER }}
@@ -118,7 +121,8 @@ jobs:
 
             # ── Provision live Grafana dashboard ──────────────────────────────────
             - name: Provision Grafana Cloud dashboard
-              if: always()
+              if: always() && github.ref == 'refs/heads/main'
+              continue-on-error: true
               env:
                   GRAFANA_INSTANCE_URL: ${{ secrets.GRAFANA_INSTANCE_URL }}
                   GRAFANA_SERVICE_ACCOUNT_TOKEN: ${{ secrets.GRAFANA_SERVICE_ACCOUNT_TOKEN }}
@@ -126,7 +130,8 @@ jobs:
 
             # ── Generate local HTML artifact dashboard ────────────────────────────
             - name: Generate HTML metrics dashboard
-              if: always()
+              if: always() && github.ref == 'refs/heads/main'
+              continue-on-error: true
               run: python3 .github/scripts/generate_metrics_dashboard.py
 
             # ── Artifacts ─────────────────────────────────────────────────────────
@@ -139,7 +144,7 @@ jobs:
                   if-no-files-found: warn
 
             - name: Upload test metrics JSON
-              if: always()
+              if: always() && github.ref == 'refs/heads/main'
               uses: actions/upload-artifact@v4
               with:
                   name: test-metrics-json
@@ -147,7 +152,7 @@ jobs:
                   if-no-files-found: warn
 
             - name: Upload metrics HTML dashboard
-              if: always()
+              if: always() && github.ref == 'refs/heads/main'
               uses: actions/upload-artifact@v4
               with:
                   name: metrics-dashboard
