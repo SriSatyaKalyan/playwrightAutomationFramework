@@ -47,6 +47,9 @@ jobs:
               if: always() && github.ref == 'refs/heads/main'
               run: |
                   python3 --version
+                  apt-get update
+                  apt-get install -y python3-pip
+                  python3 -m pip --version
                   python3 -m pip install --upgrade pip
                   python3 -m pip install requests python-snappy
 
