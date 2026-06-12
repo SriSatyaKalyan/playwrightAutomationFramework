@@ -45,11 +45,15 @@ jobs:
             # ── Python metrics dependencies (use Python from Playwright container) ─
             - name: Install Python metrics dependencies
               if: always() && github.ref == 'refs/heads/main'
+              continue-on-error: true
               run: |
                   python3 --version
-                  apt-get update
-                  apt-get install -y python3-pip
-                  python3 -m pip --version
+                  if ! python3 -m pip --version >/dev/null 2>&1; then
+                    if command -v apt-get >/dev/null 2>&1; then
+                      apt-get update
+                      apt-get install -y python3-pip
+                    fi
+                  fi
                   python3 -m pip install --upgrade pip
                   python3 -m pip install requests python-snappy
 
