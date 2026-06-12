@@ -23,129 +23,123 @@ jobs:
             PW_WORKERS: "50%"
 
         steps:
-        - name: Checkout repository
-          uses: actions/checkout@v4
+            - name: Checkout repository
+              uses: actions/checkout@v4
 
-        - name: Set up Node.js
-          uses: actions/setup-node@v4
-          with:
-              node-version: "20"
-              cache: npm
-              cache-dependency-path: package-lock.json
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+                  cache: npm
+                  cache-dependency-path: package-lock.json
 
-        # ── Dependency install (uses npm cache keyed by package-lock.json) ────
-        - name: Install npm dependencies
-          run: npm ci --prefer-offline --no-audit
+            # ── Dependency install (uses npm cache keyed by package-lock.json) ────
+            - name: Install npm dependencies
+              run: npm ci --prefer-offline --no-audit
 
-        # ── Tests ──────────────────────────────────────────────────────────────
-        - name: Run Playwright tests
-          continue-on-error: true
-          run: npm run all
+            # ── Tests ──────────────────────────────────────────────────────────────
+            - name: Run Playwright tests
+              continue-on-error: true
+              run: npm run all
 
-        # ── Python setup with pip cache ────────────────────────────────────────
-        - name: Set up Python
-          if: always() && github.ref == 'refs/heads/main'
-          uses: actions/setup-python@v5
-          with:
-              python-version: "3.11"
-              cache: pip
-              cache-dependency-path: .github/scripts/requirements.txt
+            # ── Python metrics dependencies (use Python from Playwright container) ─
+            - name: Install Python metrics dependencies
+              if: always() && github.ref == 'refs/heads/main'
+              run: |
+                  python3 --version
+                  python3 -m pip install --upgrade pip
+                  python3 -m pip install requests python-snappy
 
-        # ── Python metrics dependencies ────────────────────────────────────────
-        - name: Install Python metrics dependencies
-          if: always() && github.ref == 'refs/heads/main'
-          run: pip install requests python-snappy
+            # ── Secret verification ────────────────────────────────────────────────
+            - name: Verify Grafana secrets are set
+              if: always() && github.ref == 'refs/heads/main'
+              run: |
+                  if [ -z "$GRAFANA_CLOUD_URL" ]; then
+                    echo "❌ GRAFANA_CLOUD_URL is empty"
+                  else
+                    echo "✅ GRAFANA_CLOUD_URL is set"
+                  fi
+                  if [ -z "$GRAFANA_CLOUD_USER" ]; then
+                    echo "❌ GRAFANA_CLOUD_USER is empty"
+                  else
+                    echo "✅ GRAFANA_CLOUD_USER is set"
+                  fi
+                  if [ -z "$GRAFANA_CLOUD_TOKEN" ]; then
+                    echo "❌ GRAFANA_CLOUD_TOKEN is empty"
+                  else
+                    echo "✅ GRAFANA_CLOUD_TOKEN is set"
+                  fi
+                  if [ -z "$GRAFANA_INSTANCE_URL" ]; then
+                    echo "⚠️  GRAFANA_INSTANCE_URL not set — dashboard provisioning will be skipped"
+                  else
+                    echo "✅ GRAFANA_INSTANCE_URL is set"
+                  fi
+                  if [ -z "$GRAFANA_SERVICE_ACCOUNT_TOKEN" ]; then
+                    echo "⚠️  GRAFANA_SERVICE_ACCOUNT_TOKEN not set — dashboard provisioning will be skipped"
+                  else
+                    echo "✅ GRAFANA_SERVICE_ACCOUNT_TOKEN is set"
+                  fi
+              env:
+                  GRAFANA_CLOUD_URL: ${{ secrets.GRAFANA_CLOUD_URL }}
+                  GRAFANA_CLOUD_USER: ${{ secrets.GRAFANA_CLOUD_USER }}
+                  GRAFANA_CLOUD_TOKEN: ${{ secrets.GRAFANA_CLOUD_TOKEN }}
+                  GRAFANA_INSTANCE_URL: ${{ secrets.GRAFANA_INSTANCE_URL }}
+                  GRAFANA_SERVICE_ACCOUNT_TOKEN: ${{ secrets.GRAFANA_SERVICE_ACCOUNT_TOKEN }}
 
-        # ── Secret verification ────────────────────────────────────────────────
-        - name: Verify Grafana secrets are set
-          if: always() && github.ref == 'refs/heads/main'
-          run: |
-              if [ -z "$GRAFANA_CLOUD_URL" ]; then
-                echo "❌ GRAFANA_CLOUD_URL is empty"
-              else
-                echo "✅ GRAFANA_CLOUD_URL is set"
-              fi
-              if [ -z "$GRAFANA_CLOUD_USER" ]; then
-                echo "❌ GRAFANA_CLOUD_USER is empty"
-              else
-                echo "✅ GRAFANA_CLOUD_USER is set"
-              fi
-              if [ -z "$GRAFANA_CLOUD_TOKEN" ]; then
-                echo "❌ GRAFANA_CLOUD_TOKEN is empty"
-              else
-                echo "✅ GRAFANA_CLOUD_TOKEN is set"
-              fi
-              if [ -z "$GRAFANA_INSTANCE_URL" ]; then
-                echo "⚠️  GRAFANA_INSTANCE_URL not set — dashboard provisioning will be skipped"
-              else
-                echo "✅ GRAFANA_INSTANCE_URL is set"
-              fi
-              if [ -z "$GRAFANA_SERVICE_ACCOUNT_TOKEN" ]; then
-                echo "⚠️  GRAFANA_SERVICE_ACCOUNT_TOKEN not set — dashboard provisioning will be skipped"
-              else
-                echo "✅ GRAFANA_SERVICE_ACCOUNT_TOKEN is set"
-              fi
-          env:
-              GRAFANA_CLOUD_URL: ${{ secrets.GRAFANA_CLOUD_URL }}
-              GRAFANA_CLOUD_USER: ${{ secrets.GRAFANA_CLOUD_USER }}
-              GRAFANA_CLOUD_TOKEN: ${{ secrets.GRAFANA_CLOUD_TOKEN }}
-              GRAFANA_INSTANCE_URL: ${{ secrets.GRAFANA_INSTANCE_URL }}
-              GRAFANA_SERVICE_ACCOUNT_TOKEN: ${{ secrets.GRAFANA_SERVICE_ACCOUNT_TOKEN }}
+            # ── Parse results & push metrics to Grafana Cloud ─────────────────────
+            - name: Parse test results and push to Grafana Cloud
+              if: always() && github.ref == 'refs/heads/main'
+              continue-on-error: true
+              env:
+                  GRAFANA_CLOUD_URL: ${{ secrets.GRAFANA_CLOUD_URL }}
+                  GRAFANA_CLOUD_USER: ${{ secrets.GRAFANA_CLOUD_USER }}
+                  GRAFANA_CLOUD_TOKEN: ${{ secrets.GRAFANA_CLOUD_TOKEN }}
+              run: python3 .github/scripts/parse_test_metrics.py
 
-        # ── Parse results & push metrics to Grafana Cloud ─────────────────────
-        - name: Parse test results and push to Grafana Cloud
-          if: always() && github.ref == 'refs/heads/main'
-          continue-on-error: true
-          env:
-              GRAFANA_CLOUD_URL: ${{ secrets.GRAFANA_CLOUD_URL }}
-              GRAFANA_CLOUD_USER: ${{ secrets.GRAFANA_CLOUD_USER }}
-              GRAFANA_CLOUD_TOKEN: ${{ secrets.GRAFANA_CLOUD_TOKEN }}
-          run: python3 .github/scripts/parse_test_metrics.py
+            # ── Provision live Grafana dashboard ──────────────────────────────────
+            - name: Provision Grafana Cloud dashboard
+              if: always() && github.ref == 'refs/heads/main'
+              continue-on-error: true
+              env:
+                  GRAFANA_INSTANCE_URL: ${{ secrets.GRAFANA_INSTANCE_URL }}
+                  GRAFANA_SERVICE_ACCOUNT_TOKEN: ${{ secrets.GRAFANA_SERVICE_ACCOUNT_TOKEN }}
+              run: python3 .github/scripts/provision_dashboard.py
 
-        # ── Provision live Grafana dashboard ──────────────────────────────────
-        - name: Provision Grafana Cloud dashboard
-          if: always() && github.ref == 'refs/heads/main'
-          continue-on-error: true
-          env:
-              GRAFANA_INSTANCE_URL: ${{ secrets.GRAFANA_INSTANCE_URL }}
-              GRAFANA_SERVICE_ACCOUNT_TOKEN: ${{ secrets.GRAFANA_SERVICE_ACCOUNT_TOKEN }}
-          run: python3 .github/scripts/provision_dashboard.py
+            # ── Generate local HTML artifact dashboard ────────────────────────────
+            - name: Generate HTML metrics dashboard
+              if: always() && github.ref == 'refs/heads/main'
+              continue-on-error: true
+              run: python3 .github/scripts/generate_metrics_dashboard.py
 
-        # ── Generate local HTML artifact dashboard ────────────────────────────
-        - name: Generate HTML metrics dashboard
-          if: always() && github.ref == 'refs/heads/main'
-          continue-on-error: true
-          run: python3 .github/scripts/generate_metrics_dashboard.py
+            # ── Artifacts ─────────────────────────────────────────────────────────
+            - name: Upload Playwright HTML report
+              if: always()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: playwright-html-report
+                  path: reports/
+                  if-no-files-found: warn
 
-        # ── Artifacts ─────────────────────────────────────────────────────────
-        - name: Upload Playwright HTML report
-          if: always()
-          uses: actions/upload-artifact@v4
-          with:
-              name: playwright-html-report
-              path: reports/
-              if-no-files-found: warn
+            - name: Upload test metrics JSON
+              if: always() && github.ref == 'refs/heads/main'
+              uses: actions/upload-artifact@v4
+              with:
+                  name: test-metrics-json
+                  path: reports/test-metrics.json
+                  if-no-files-found: warn
 
-        - name: Upload test metrics JSON
-          if: always() && github.ref == 'refs/heads/main'
-          uses: actions/upload-artifact@v4
-          with:
-              name: test-metrics-json
-              path: reports/test-metrics.json
-              if-no-files-found: warn
+            - name: Upload metrics HTML dashboard
+              if: always() && github.ref == 'refs/heads/main'
+              uses: actions/upload-artifact@v4
+              with:
+                  name: metrics-dashboard
+                  path: reports/metrics-dashboard/index.html
+                  if-no-files-found: warn
 
-        - name: Upload metrics HTML dashboard
-          if: always() && github.ref == 'refs/heads/main'
-          uses: actions/upload-artifact@v4
-          with:
-              name: metrics-dashboard
-              path: reports/metrics-dashboard/index.html
-              if-no-files-found: warn
-
-        - name: Upload test traces
-          if: always()
-          uses: actions/upload-artifact@v4
-          with:
-              name: test-traces
-              path: test-results/
-              if-no-files-found: warn
+            - name: Upload test traces
+              if: always()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: test-traces
+                  path: test-results/
+                  if-no-files-found: warn
