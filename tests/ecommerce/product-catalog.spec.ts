@@ -3,55 +3,49 @@
 
 import { test, expect } from "../../src/fixtures/pageObjectFixtures";
 import { logger } from "../../src/utils/logger";
-import { productCatalogData } from "../../src/utils/testData";
 
-test.describe("Product Catalog Presence Test", () => {
-	test("Product Catalog Browsing", async ({ productCatalogPage }) => {
-		logger.info("Starting Product Catalog Browsing test");
+test.describe("Product Catalog Element Presence Test", () => {
+	test("Checking for information presence for product items on home page", async ({
+		catalogPageReady,
+		catalogData,
+	}) => {
+		logger.info("Starting Product Catalog Element Presence test");
 		logger.info(
 			"Navigating to home page and verifying products are present with the appropriate sale and discount information. Ensuring that the elements on the page are visible and contain the correct information.",
 		);
 
-		logger.info("Navigating to Bellatrix e-commerce demo site");
-		await productCatalogPage.navigateToCatalog();
-
-		logger.info("Verifying product count display");
-		await productCatalogPage.expectProductCount(
-			productCatalogData.productNames.length,
-		);
-
 		logger.info("Verifying all 5 product headings are visible");
-		await productCatalogPage.expectProductHeadingsVisible(
-			productCatalogData.productNames,
+		await catalogPageReady.expectProductHeadingsVisible(
+			catalogData.productNames,
 		);
 
 		logger.info("Verifying sale badges are present on discounted products");
-		await productCatalogPage.expectAnySaleBadgeVisible();
+		await catalogPageReady.expectAnySaleBadgeVisible();
 
 		logger.info("Verifying pricing information displays correctly");
 		await expect(
-			productCatalogPage.priceInProductCard(
+			catalogPageReady.priceInProductCard(
 				"Falcon 9",
-				productCatalogData.falcon9Prices.sale,
+				catalogData.falcon9Prices.sale,
 			),
 		).toBeVisible();
 		await expect(
-			productCatalogPage.priceInProductCard(
+			catalogPageReady.priceInProductCard(
 				"Falcon 9",
-				productCatalogData.falcon9Prices.original,
+				catalogData.falcon9Prices.original,
 			),
 		).toBeVisible();
 
-		await productCatalogPage.expectPricesVisible(
-			productCatalogData.otherVisiblePrices,
+		await catalogPageReady.expectPricesVisible(
+			catalogData.otherVisiblePrices,
 		);
 
 		logger.info("Verifying Add to cart and Read more buttons are present");
-		await productCatalogPage.expectCatalogActionsVisible();
+		await catalogPageReady.expectCatalogActionsVisible();
 
 		logger.info("Verifying page images are loaded properly");
-		await productCatalogPage.expectBrandImageVisible();
+		await catalogPageReady.expectBrandImageVisible();
 
-		logger.info("Product Catalog Browsing test completed successfully");
+		logger.info("Product Catalog Element Presence test completed successfully");
 	});
 });
