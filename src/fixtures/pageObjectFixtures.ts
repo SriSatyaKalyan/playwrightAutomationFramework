@@ -2,12 +2,15 @@ import { test as base } from "@playwright/test";
 import { ProductCatalogPage } from "../pageObjects/ProductCatalogPage";
 import { ProductDetailsPage } from "../pageObjects/ProductDetailsPage";
 import { ShoppingCartPage } from "../pageObjects/ShoppingCartPage";
+import { productCatalogData, type ProductCatalogData } from "../utils/testData";
 import { logger } from "../utils/logger";
 
 type PageObjectFixtures = {
 	productCatalogPage: ProductCatalogPage;
 	productDetailsPage: ProductDetailsPage;
 	shoppingCartPage: ShoppingCartPage;
+	catalogData: ProductCatalogData;
+	catalogPageReady: ProductCatalogPage;
 };
 
 /**
@@ -37,6 +40,22 @@ export const test = base.extend<PageObjectFixtures>({
 		logger.info("Setting up ShoppingCartPage fixture");
 		await use(new ShoppingCartPage(page));
 		logger.info("Tearing down ShoppingCartPage fixture");
+	},
+
+	catalogData: async ({}, use) => {
+		await use(productCatalogData);
+	},
+
+	catalogPageReady: async ({ productCatalogPage, catalogData }, use) => {
+		logger.info("Setting up preloaded catalog page fixture");
+		await productCatalogPage.navigateToCatalog();
+		await productCatalogPage.expectCatalogPageTitle();
+		await productCatalogPage.expectShopHeadingVisible();
+		await productCatalogPage.expectProductCount(
+			catalogData.productNames.length,
+		);
+		await use(productCatalogPage);
+		logger.info("Tearing down preloaded catalog page fixture");
 	},
 });
 
