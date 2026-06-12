@@ -1,46 +1,76 @@
 # playwrightAutomationFramework
 
-The configuration for testing is set so that screenshots are captured only when failures occur
+[![Playwright](https://img.shields.io/badge/Playwright-Test-2EAD33?logo=playwright&logoColor=white)](https://playwright.dev/)
+[![Run Playwright Tests](https://github.com/SriSatyaKalyan/playwrightAutomationFramework/actions/workflows/playwright-tests.yml/badge.svg)](https://github.com/SriSatyaKalyan/playwrightAutomationFramework/actions/workflows/playwright-tests.yml)
+[![Cucumber](https://img.shields.io/badge/Cucumber-BDD-23D96C?logo=cucumber&logoColor=white)](https://cucumber.io/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-Automation-5FA04E?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 
-```js
-  use: {
-  trace: "retain-on-failure",
-  browserName: "chromium",
-  screenshot: "on",
-  headless: true,
-  },
+`playwrightAutomationFramework` is a Playwright-based automation framework for the Bellatrix e-commerce demo site. It combines native Playwright specs and Cucumber BDD tests to cover the core shopping experience with a maintainable page-object structure, shared fixtures, reusable test data, and centralized logging.
+
+## What This Framework Does
+
+The framework validates the most important flows on the demo storefront, including catalog browsing, product detail inspection, cart interactions, and accessibility-oriented keyboard checks. It is designed to give fast feedback on product visibility, pricing, sale badges, navigation, and cart totals while keeping the tests easy to extend.
+
+## Current Features
+
+- Native Playwright specs for UI automation under `tests/ecommerce/`.
+- Cucumber BDD support for behavior-driven scenarios under `tests/features/`.
+- Page Object Model coverage for the catalog, product details, and shopping cart screens.
+- Shared fixtures that inject page objects into tests for cleaner test setup.
+- Centralized test data for product names and pricing assertions.
+- Shared logger utility for consistent test output.
+- Playwright configuration tuned for Chromium, traces on failure, screenshots on failure, and HTML/JSON reporting.
+- Regression tagging support for filtering important scenarios.
+
+## Current Test Coverage
+
+- Product catalog browsing and sale badge validation.
+- Product details page checks for title, description, gallery, tabs, quantity, and breadcrumbs.
+- Shopping cart management, including add-to-cart, quantity updates, coupon entry, and totals.
+- Keyboard navigation and accessibility-focused interactions.
+- Cucumber sale validation for catalog pricing.
+
+## Run Commands
+
+```bash
+npm run all
 ```
 
-To run all tests, use the below command
-
-```
-npx playwright test
+```bash
+npm run allHeaded
 ```
 
-To run Cucumber files, use the below command
-
-```
-npx cucumber-js --exit
+```bash
+npm run regression
 ```
 
-To generate cucumber-report, use the below command
-
-```
-npx cucumber-js --tags @Regression --exit --format html:cucumber-report.html
+```bash
+npm run cucumber
 ```
 
-Working on currently adding more tests. Will include the following features in the framework soon:
+```bash
+npm run cucumber:all
+```
 
-* API Testing
-  * Add the capability in package.json >> scripts
-* End to end testing including UI and API flows
-  * Add the capability in package.json >> scripts
-* Cross browser testing
+```bash
+npm run cucumber:sale-catalog
+```
 
-TO-DO:
+## Reporting
 
-* [ ] Add console.log statements to all tests as the first line
-* [ ] Add tagging for all tests
-* [ ] Add corresponding scripts
-* [ ] Add connection to Jenkins
-* [ ] Can we have Jenkins results shared in Github as a screenshot!?
+- HTML and JSON reports are written to `reports/`.
+- Playwright traces and screenshots are retained on failure for debugging.
+- Cucumber reports can be generated with the HTML formatter when needed.
+
+## TO DO
+
+- Add API testing support and corresponding scripts.
+- Add end-to-end flows that combine UI and API coverage.
+- Expand browser coverage beyond Chromium and validate the framework across more devices.
+- Add CI integration with Jenkins and publish build feedback consistently.
+- Introduce a cleaner tagging strategy across both Playwright and Cucumber tests.
+- Grow the page-object layer for additional product and checkout flows.
+- Add more negative-path and edge-case coverage for cart and pricing logic.
+- Improve reporting automation so execution results are easier to share with the team.
