@@ -1,7 +1,6 @@
 # playwrightAutomationFramework
 
 [![Run Playwright Tests](https://github.com/SriSatyaKalyan/playwrightAutomationFramework/actions/workflows/playwright-tests.yml/badge.svg)](https://github.com/SriSatyaKalyan/playwrightAutomationFramework/actions/workflows/playwright-tests.yml)
-[![Coverage](https://img.shields.io/codecov/c/github/SriSatyaKalyan/playwrightAutomationFramework?label=Coverage)](https://codecov.io/gh/SriSatyaKalyan/playwrightAutomationFramework)
 
 `playwrightAutomationFramework` is a Playwright-based automation framework for the Bellatrix e-commerce demo site. It combines native Playwright specs and Cucumber BDD tests to cover the core shopping experience with a maintainable page-object structure, shared fixtures, reusable test data, and centralized logging.
 
